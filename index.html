@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aethelgard Dynamics | Terminal Stella</title>
+    <style>
+        /* Estética Base Dark Retro-Futurista */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #0a0a0c;
+            color: #00ffcc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 40px 20px;
+        }
+
+        /* Efeito de Scanlines na tela (CRT Antigo) */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #00ffcc;
+            background: rgba(10, 10, 12, 0.9);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+            padding: 40px;
+            border-radius: 4px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px #00ffcc;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+        }
+
+        /* SEÇÃO DE PLANOS AUTOMÁTICOS */
+        .plans-section {
+            margin-bottom: 40px;
+        }
+
+        .plans-title {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        .plans-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .plan-card {
+            border: 1px solid #333;
+            background: rgba(15, 15, 18, 0.8);
+            padding: 25px;
+            width: 260px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .plan-card:hover {
+            border-color: #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .plan-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .plan-card .price {
+            font-size: 1.6rem;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+        }
+
+        .plan-card ul {
+            list-style: none;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .plan-card ul li::before {
+            content: "> ";
+            color: #00ffcc;
+        }
+
+        .btn-buy {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-buy:hover {
+            background: #00ffcc;
+            color: #0a0a0c;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        /* CAIXA DE AUTENTICAÇÃO */
+        .token-box {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px dashed #333;
+            background: rgba(15, 15, 18, 0.5);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        input[type="text"] {
+            background: #111;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 12px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: inset 0 0 5px rgba(0, 255, 204, 0.2);
+        }
+
+        /* ZONA DE UPLOAD (DROPZONE) */
+        .dropzone {
+            border: 2px dashed #333;
+            padding: 50px 20px;
+            background: rgba(20, 20, 25, 0.3);
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+        }
+
+        .dropzone.active {
+            border-color: #00ffcc;
+            cursor: pointer;
+            background: rgba(0, 255, 204, 0.02);
+        }
+
+        .dropzone.active:hover {
+            background: rgba(0, 255, 204, 0.08);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+        /* BARRA DE PROGRESSO SINALIZADA */
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+            background: #111;
+            border: 1px solid #00ffcc;
+            padding: 2px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .status-text {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Aethelgard Dynamics</h1>
+            <p>// SISTEMA AUTÔNOMO DE DISTRIBUIÇÃO - STELLA V5.0.0</p>
+        </header>
+
+        <div class="plans-section">
+            <h2 class="plans-title">// SELECIONE SEU PLANO PARA REQUISITAR ACESSO</h2>
+            <div class="plans-grid">
+                
+                <div class="plan-card">
+                    <h3>[ INDIE ]</h3>
+                    <div class="price">$ 499/mês</div>
+                    <ul>
+                        <li>Até 50GB de Assets</li>
+                        <li>Otimização Core Básica</li>
+                        <li>Faturamento Mensal</li>
+                    </ul>
+                    <button class="btn-buy" onclick="simularCompra('Indie Studio')">COMPRAR ACESSO</button>
+                </div>
+
+                <div class="plan-card" style="border-color: #00ffcc;">
+                    <h3>[ ENTERPRISE ]</h3>
+                    <div class="price">$ 5.000/mês</div>
+                    <ul>
+                        <li>Assets Ilimitados</li>
+                        <li>Overclock de Parallel Threads</li>
+                        <li>Suporte Auto-Cura Ativo</li>
+                    </ul>
+                    <button class="btn-buy" onclick="simularCompra('Netmarble Games')">COMPRAR ACESSO</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="token-box">
+            <label for="token">// COLOQUE SEU TOKEN GERADO ABAIXO PARA LIBERAR O PROCESSO:</label>
+            <input type="text" id="token" placeholder="Aguardando liberação de pagamento..." oninput="verificarToken()">
+        </div>
+
+        <div class="dropzone" id="dropzone" onclick="simularUpload()">
+            <p id="dropzone-text">[ TERMINAL BLOQUEADO: INSIRA UM TOKEN VÁLIDO ]</p>
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p class="status-text" id="status-text"></p>
+        </div>
+    </div>
+
+    <script>
+        // Simulação do comportamento do robô automatizado
+        function simularCompra(nomeEstudio) {
+            alert(`[GATEWAY DE PAGAMENTO]: Transação aprovada para ${nomeEstudio}!\n\nDisparando ordem para o token_generator.py...`);
+            
+            // Simulação da resposta do nosso script em Python
+            const anoAtual = new Date().getFullYear();
+            const tokenSimulado = `AE-${nomeEstudio.toUpperCase().replace(" ", "")}-8F3D29-${anoAtual}`;
+            
+            document.getElementById('token').value = tokenSimulado;
+            verificarToken();
+            
+            alert(`[TOKEN_GENERATOR]: Chave gerada com sucesso e injetada no terminal:\n${tokenSimulado}\n\nUma cópia foi disparada para o e-mail corporativo do cliente.`);
+        }
+
+        function verificarToken() {
+            const token = document.getElementById('token').value.trim();
+            const dropzone = document.getElementById('dropzone');
+            const dropzoneText = document.getElementById('dropzone-text');
+
+            if(token.length > 5) {
+                dropzone.classList.add('active');
+                dropzoneText.innerText = "[ TOKEN AUTENTICADO: CLIQUE PARA UPAR SEUS ASSETS ]";
+            } else {
+                dropzone.classList.remove('active');
+                dropzoneText.innerText = "[ TERMINAL BLOQUEADO: INSIRA UM TOKEN VÁLIDO ]";
+            }
+        }
+
+        function simularUpload() {
+            const dropzone = document.getElementById('dropzone');
+            if (!dropzone.classList.contains('active')) return;
+
+            document.getElementById('dropzone-text').style.display = 'none';
+            document.getElementById('progress-container').style.display = 'block';
+            const statusText = document.getElementById('status-text');
+            const progressBar = document.getElementById('progress-bar');
+            
+            statusText.innerText = "Aberto de mão ativo com o api_gateway.py...";
+
+            let progresso = 0;
+            const intervalo = setInterval(() => {
+                progresso += 4;
+                progressBar.style.width = progresso + '%';
+                
+                if(progresso === 24) statusText.innerText = "Executando criptografia via traffic_encryptor.py...";
+                if(progresso === 52) statusText.innerText = "Fracionando arquivos no parallel_processor.py...";
+                if(progresso === 80) statusText.innerText = "Compactando texturas via stella_core.py...";
+
+                if (progresso >= 100) {
+                    clearInterval(intervalo);
+                    statusText.innerHTML = "<span style='color: #00ff00;'>PROCESSAMENTO CONCLUÍDO! Redirecionando para o interface_manager.py...</span>";
+                    setTimeout(() => {
+                        alert("MÁGICA CONCLUÍDA!\nOs arquivos já foram otimizados. O dashboard do repositório foi aberto em tempo real.");
+                    }, 400);
+                }
+            }, 60);
+        }
+    </script>
+</body>
+</html>
+
