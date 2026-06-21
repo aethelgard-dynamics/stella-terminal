@@ -294,7 +294,7 @@
             }
         }
 
-        function simularUpload() {
+               async function simularUpload() {
             const dropzone = document.getElementById('dropzone');
             if (!dropzone.classList.contains('active')) return;
 
@@ -303,26 +303,43 @@
             const statusText = document.getElementById('status-text');
             const progressBar = document.getElementById('progress-bar');
             
-            statusText.innerText = "Aberto de mão ativo com o api_gateway.py...";
+            // 1. Configurando o endereço real do seu servidor no Render
+            const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
+            const tokenDigitado = document.getElementById('token').value.trim();
 
-            let progresso = 0;
-            const intervalo = setInterval(() => {
-                progresso += 4;
-                progressBar.style.width = progresso + '%';
+            statusText.innerText = "Conectando ao núcleo da Stella no Render...";
+            progressBar.style.width = '20%';
+
+            try {
+                // 2. Fazendo a chamada real de rede pela internet!
+                const response = await fetch(`${BACKEND_URL}/api/comando`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${tokenDigitado}`
+                    },
+                    body: JSON.stringify({ comando: "OPTIMIZE_ASSETS" })
+                });
+
+                progressBar.style.width = '60%';
+                statusText.innerText = "Processando dados na nuvem corporativa...";
+
+                const dados = await response.json();
                 
-                if(progresso === 24) statusText.innerText = "Executando criptografia via traffic_encryptor.py...";
-                if(progresso === 52) statusText.innerText = "Fracionando arquivos no parallel_processor.py...";
-                if(progresso === 80) statusText.innerText = "Compactando texturas via stella_core.py...";
+                progressBar.style.width = '100%';
+                statusText.innerHTML = `<span style='color: #00ff00;'>PROCESSAMENTO REAL CONCLUÍDO! Resposta da Stella: ${dados.resposta || 'Sucesso'}</span>`;
+                
+                setTimeout(() => {
+                    alert(`[STELLA CORE]: Processamento finalizado na nuvem!\nRetorno: ${dados.resposta || 'Concluído'}`);
+                }, 400);
 
-                if (progresso >= 100) {
-                    clearInterval(intervalo);
-                    statusText.innerHTML = "<span style='color: #00ff00;'>PROCESSAMENTO CONCLUÍDO! Redirecionando para o interface_manager.py...</span>";
-                    setTimeout(() => {
-                        alert("MÁGICA CONCLUÍDA!\nOs arquivos já foram otimizados. O dashboard do repositório foi aberto em tempo real.");
-                    }, 400);
-                }
-            }, 60);
-        }
+            } catch (erro) {
+                console.error("Erro na conexão:", erro);
+                progressBar.style.backgroundColor = '#ff0055';
+                statusText.innerHTML = "<span style='color: #ff0055;'>FALHA DE CONEXÃO: O núcleo da Stella não respondeu.</span>";
+            }
+               }
+        
     </script>
 </body>
 </html>
