@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aethelgard Dynamics | Terminal Stella</title>
+    <title>Aethelgard Dynamics | Stellar Optimization</title>
     <style>
-        /* Estética Base Dark Retro-Futurista */
+        /* Base Dark Retro-Futuristic Aesthetic */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -25,7 +25,7 @@
             padding: 40px 20px;
         }
 
-        /* Efeito de Scanlines na tela (CRT Antigo) */
+        /* CRT Screen Scanline Effect */
         body::before {
             content: " ";
             display: block;
@@ -62,7 +62,7 @@
             margin-bottom: 40px;
         }
 
-        /* SEÇÃO DE PLANOS AUTOMÁTICOS */
+        /* PAY-AS-YOU-GO PLANS SECTION */
         .plans-section {
             margin-bottom: 40px;
         }
@@ -79,7 +79,7 @@
             gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 35px;
+            margin-bottom: 15px;
         }
 
         .plan-card {
@@ -142,41 +142,52 @@
             box-shadow: 0 0 10px #00ffcc;
         }
 
-        /* CAIXA DE AUTENTICAÇÃO */
-        .token-box {
+        /* TUNING CONFIG & AUTH BOX */
+        .setup-area {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
             margin-bottom: 30px;
+        }
+
+        .config-box, .token-box {
+            flex: 1;
+            min-width: 280px;
             padding: 20px;
             border: 1px dashed #333;
             background: rgba(15, 15, 18, 0.5);
+            text-align: left;
         }
 
         label {
             display: block;
             margin-bottom: 12px;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: #888;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             background: #111;
             border: 1px solid #00ffcc;
             color: #00ffcc;
-            padding: 12px;
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            font-size: 1rem;
+            padding: 10px;
+            width: 100%;
+            font-size: 0.9rem;
             outline: none;
             box-shadow: inset 0 0 5px rgba(0, 255, 204, 0.2);
+            font-family: monospace;
         }
 
-        /* ZONA DE UPLOAD (DROPZONE) */
+        /* DROPZONE AREA */
         .dropzone {
             border: 2px dashed #333;
             padding: 50px 20px;
             background: rgba(20, 20, 25, 0.3);
             cursor: not-allowed;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .dropzone.active {
@@ -190,7 +201,7 @@
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
         }
 
-        /* BARRA DE PROGRESSO SINALIZADA */
+        /* LIVE PROGRESS BAR */
         .progress-container {
             display: none;
             margin-top: 20px;
@@ -205,6 +216,7 @@
             height: 20px;
             background: #00ffcc;
             box-shadow: 0 0 10px #00ffcc;
+            transition: width 0.1s ease;
         }
 
         .status-text {
@@ -218,46 +230,63 @@
 
     <div class="container">
         <header>
-            <h1>Aethelgard Dynamics</h1>
-            <p>// SISTEMA AUTÔNOMO DE DISTRIBUIÇÃO - STELLA V5.0.0</p>
+            <h1>Stellar Optimization</h1>
+            <p>// AETHELGARD DYNAMICS REAL-TIME ENGINE - LIVE PROD_V1.0</p>
         </header>
 
+        <!-- PLANS INFRASTRUCTURE WITH THE NEW 1:10 RATIO -->
         <div class="plans-section">
-            <h2 class="plans-title">// SELECIONE SEU PLANO PARA REQUISITAR ACESSO</h2>
+            <h2 class="plans-title">// PAY-AS-YOU-GO CREDITS PACKAGES (1 USD = 10 CREDITS)</h2>
             <div class="plans-grid">
                 
                 <div class="plan-card">
-                    <h3>[ INDIE ]</h3>
-                    <div class="price">$ 499/mês</div>
+                    <h3>[ STARTER PACK ]</h3>
+                    <div class="price">$ 10.00</div>
                     <ul>
-                        <li>Até 50GB de Assets</li>
-                        <li>Otimização Core Básica</li>
-                        <li>Faturamento Mensal</li>
+                        <li>100 Optimization Credits</li>
+                        <li>Full Core Engine Access</li>
+                        <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simularCompra('Indie Studio')">COMPRAR ACESSO</button>
+                    <button class="btn-buy" onclick="simulatePayPalCheckout(10, 'Starter Pack Dev')">ORDER CREDITS</button>
                 </div>
 
                 <div class="plan-card" style="border-color: #00ffcc;">
-                    <h3>[ ENTERPRISE ]</h3>
-                    <div class="price">$ 5.000/mês</div>
+                    <h3>[ STUDIO PACK ]</h3>
+                    <div class="price">$ 50.00</div>
                     <ul>
-                        <li>Assets Ilimitados</li>
-                        <li>Overclock de Parallel Threads</li>
-                        <li>Suporte Auto-Cura Ativo</li>
+                        <li>500 Optimization Credits</li>
+                        <li>High-Priority Queue</li>
+                        <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simularCompra('Netmarble Games')">COMPRAR ACESSO</button>
+                    <button class="btn-buy" onclick="simulatePayPalCheckout(50, 'Gamedev Studio Core')">ORDER CREDITS</button>
                 </div>
 
             </div>
         </div>
 
-        <div class="token-box">
-            <label for="token">// COLOQUE SEU TOKEN GERADO ABAIXO PARA LIBERAR O PROCESSO:</label>
-            <input type="text" id="token" placeholder="Aguardando liberação de pagamento..." oninput="verificarToken()">
+        <!-- CONTROL TERMINAL SETUP -->
+        <div class="setup-area">
+            <div class="config-box">
+                <label for="preset">// CHOOSE OPTIMIZATION PROFILE:</label>
+                <select id="preset">
+                    <option value="BALANCED">BALANCED (75% Quality - Default)</option>
+                    <option value="PERFORMANCE">PERFORMANCE (40% Quality - Mobile Focus)</option>
+                    <option value="ULTRA_QUALITY">ULTRA QUALITY (95% Quality - Heavy Fidelity)</option>
+                </select>
+            </div>
+
+            <div class="token-box">
+                <label for="token">// ENTER RUNTIME ACCESS TOKEN:</label>
+                <input type="text" id="token" placeholder="Awaiting gateway clearance..." oninput="validateToken()">
+            </div>
         </div>
 
-        <div class="dropzone" id="dropzone" onclick="simularUpload()">
-            <p id="dropzone-text">[ TERMINAL BLOQUEADO: INSIRA UM TOKEN VÁLIDO ]</p>
+        <!-- HIDDEN FILE INPUT FOR REAL UPLOADS -->
+        <input type="file" id="file-input" style="display: none;" onchange="processRealUpload(this.files[0])">
+
+        <!-- DYNAMIC MAIN TERMINAL DROPZONE -->
+        <div class="dropzone" id="dropzone" onclick="triggerFileInput()">
+            <p id="dropzone-text">[ TERMINAL LOCKED: INVALID ACCESS KEY ]</p>
             <div class="progress-container" id="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
@@ -266,81 +295,104 @@
     </div>
 
     <script>
-        // Simulação do comportamento do robô automatizado
-        function simularCompra(nomeEstudio) {
-            alert(`[GATEWAY DE PAGAMENTO]: Transação aprovada para ${nomeEstudio}!\n\nDisparando ordem para o token_generator.py...`);
+        // Set the active production endpoint from your Render host dashboard
+        const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
+
+        // Simulated PayPal Instant Notification integration
+        function simulatePayPalCheckout(amount, developerName) {
+            alert(`[PAYPAL GATEWAY]: Processing secure checkout transaction for $${amount}.00 USD...`);
             
-            // Simulação da resposta do nosso script em Python
-            const anoAtual = new Date().getFullYear();
-            const tokenSimulado = `AE-${nomeEstudio.toUpperCase().replace(" ", "")}-8F3D29-${anoAtual}`;
+            // Calculating dynamically with our updated premium rule (1 USD = 10 Credits)
+            const targetCredits = amount * 10;
+            const currentYear = new Date().getFullYear();
+            const syntheticToken = `AE-${developerName.toUpperCase().replace(/\s/g, "")}-${currentYear}`;
             
-            document.getElementById('token').value = tokenSimulado;
-            verificarToken();
+            document.getElementById('token').value = syntheticToken;
+            validateToken();
             
-            alert(`[TOKEN_GENERATOR]: Chave gerada com sucesso e injetada no terminal:\n${tokenSimulado}\n\nUma cópia foi disparada para o e-mail corporativo do cliente.`);
+            alert(`[STELLA WEBHOOK AUTOMATION]: Payment Verified!\nGenerated Token: ${syntheticToken}\nCredits allocated: ${targetCredits} files.\nAn automated verification email has been sent.`);
         }
 
-        function verificarToken() {
-            const token = document.getElementById('token').value.trim();
+        function validateToken() {
+            const tokenValue = document.getElementById('token').value.trim();
             const dropzone = document.getElementById('dropzone');
             const dropzoneText = document.getElementById('dropzone-text');
 
-            if(token.length > 5) {
+            if(tokenValue.length > 8) {
                 dropzone.classList.add('active');
-                dropzoneText.innerText = "[ TOKEN AUTENTICADO: CLIQUE PARA UPAR SEUS ASSETS ]";
+                dropzoneText.innerText = "[ ACCESS GRANTED: CLICK TO UPLOAD AND OPTIMIZE ASSET ]";
             } else {
                 dropzone.classList.remove('active');
-                dropzoneText.innerText = "[ TERMINAL BLOQUEADO: INSIRA UM TOKEN VÁLIDO ]";
+                dropzoneText.innerText = "[ TERMINAL LOCKED: INVALID ACCESS KEY ]";
             }
         }
 
-               async function simularUpload() {
+        function triggerFileInput() {
             const dropzone = document.getElementById('dropzone');
-            if (!dropzone.classList.contains('active')) return;
+            if (dropzone.classList.contains('active')) {
+                document.getElementById('file-input').click();
+            }
+        }
 
+        async function processRealUpload(fileData) {
+            if (!fileData) return;
+
+            const tokenValue = document.getElementById('token').value.trim();
+            const selectedPreset = document.getElementById('preset').value;
+
+            // UI Terminal adjustments
             document.getElementById('dropzone-text').style.display = 'none';
             document.getElementById('progress-container').style.display = 'block';
-            const statusText = document.getElementById('status-text');
-            const progressBar = document.getElementById('progress-bar');
             
-            // 1. Configurando o endereço real do seu servidor no Render
-            const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
-            const tokenDigitado = document.getElementById('token').value.trim();
+            const statusLabel = document.getElementById('status-text');
+            const progressBarFill = document.getElementById('progress-bar');
+            
+            statusLabel.innerText = "Connecting to Stellar Core infrastructure on Render...";
+            progressBarFill.style.width = '25%';
 
-            statusText.innerText = "Conectando ao núcleo da Stella no Render...";
-            progressBar.style.width = '20%';
+            // Initializing real multipart data compilation
+            const multiPartForm = new FormData();
+            multiPartForm.append("file", fileData);
 
             try {
-                // 2. Fazendo a chamada real de rede pela internet!
-                const response = await fetch(`${BACKEND_URL}/api/comando`, {
+                // Request targeting our live pipeline
+                statusLabel.innerText = `Uploading and processing file via profile: [${selectedPreset}]...`;
+                progressBarFill.style.width = '50%';
+
+                const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?modo_preset=${selectedPreset}`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${tokenDigitado}`
+                        "Authorization": `Bearer ${tokenValue}`
                     },
-                    body: JSON.stringify({ comando: "OPTIMIZE_ASSETS" })
+                    body: multiPartForm
                 });
 
-                progressBar.style.width = '60%';
-                statusText.innerText = "Processando dados na nuvem corporativa...";
+                if (!serverResponse.ok) {
+                    const errorMetadata = await serverResponse.json();
+                    throw new Error(errorMetadata.detail || "Server pipeline execution crash.");
+                }
 
-                const dados = await response.json();
-                
-                progressBar.style.width = '100%';
-                statusText.innerHTML = `<span style='color: #00ff00;'>PROCESSAMENTO REAL CONCLUÍDO! Resposta da Stella: ${dados.resposta || 'Sucesso'}</span>`;
-                
-                setTimeout(() => {
-                    alert(`[STELLA CORE]: Processamento finalizado na nuvem!\nRetorno: ${dados.resposta || 'Concluído'}`);
-                }, 400);
+                progressBarFill.style.width = '85%';
+                statusLabel.innerText = "Downloading optimized production data asset...";
 
-            } catch (erro) {
-                console.error("Erro na conexão:", erro);
-                progressBar.style.backgroundColor = '#ff0055';
-                statusText.innerHTML = "<span style='color: #ff0055;'>FALHA DE CONEXÃO: O núcleo da Stella não respondeu.</span>";
+                // Extracting real binary object returned by FastAPI response stream
+                const binaryBlob = await serverResponse.blob();
+                const downloadElement = document.createElement('a');
+                downloadElement.href = window.URL.createObjectURL(binaryBlob);
+                downloadElement.download = `stella_${fileData.name}`;
+                document.body.appendChild(downloadElement);
+                downloadElement.click();
+                downloadElement.remove();
+
+                progressBarFill.style.width = '100%';
+                statusLabel.innerHTML = "<span style='color: #00ff00;'>STELLAR PROCESSING COMPLETE! ASSET COMPILED AND DOWNLOADED.</span>";
+
+            } catch (runtimeError) {
+                console.error("Pipeline failure:", runtimeError);
+                progressBarFill.style.backgroundColor = '#ff0055';
+                statusLabel.innerHTML = `<span style='color: #ff0055;'>CRITICAL ERROR: ${runtimeError.message}</span>`;
             }
-               }
-        
+        }
     </script>
 </body>
 </html>
-
