@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aethelgard Dynamics | Stellar Optimization</title>
+    <title>SINTACSIX | Aethelgard Dynamics</title>
     <style>
-        /* Base Dark Retro-Futuristic Aesthetic */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -49,21 +48,45 @@
         }
 
         header h1 {
-            font-size: 2.2rem;
-            letter-spacing: 4px;
+            font-size: 2.8rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            text-shadow: 0 0 8px #00ffcc;
-            margin-bottom: 10px;
+            font-weight: bold;
+            color: #ff0033;
+            text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
+            margin-bottom: 15px;
         }
 
         header p {
-            color: #888;
-            font-size: 0.9rem;
+            color: #00ff00;
+            font-size: 0.95rem;
+            line-height: 1.5;
             margin-bottom: 40px;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
 
-        /* PAY-AS-YOU-GO PLANS SECTION */
+        /* EMAIL AUTH GATEWAY (STEP 1) */
+        .auth-gateway {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px dashed #333;
+            background: rgba(15, 15, 18, 0.5);
+            text-align: left;
+        }
+
+        /* CREDIT COUNTER */
+        .credit-display {
+            display: none;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.4);
+            letter-spacing: 1px;
+        }
+
+        /* PLANS INFRASTRUCTURE (STEP 2 & 3) */
         .plans-section {
+            display: none;
             margin-bottom: 40px;
         }
 
@@ -142,22 +165,14 @@
             box-shadow: 0 0 10px #00ffcc;
         }
 
-        /* TUNING CONFIG & AUTH BOX */
+        /* TUNING CONFIG AREA (STEP 4) */
         .setup-area {
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            display: none;
             margin-bottom: 30px;
-        }
-
-        .config-box, .token-box {
-            flex: 1;
-            min-width: 280px;
+            text-align: left;
             padding: 20px;
             border: 1px dashed #333;
             background: rgba(15, 15, 18, 0.5);
-            text-align: left;
         }
 
         label {
@@ -168,7 +183,7 @@
             color: #888;
         }
 
-        input[type="text"], select {
+        input[type="text"], input[type="email"], select {
             background: #111;
             border: 1px solid #00ffcc;
             color: #00ffcc;
@@ -180,8 +195,25 @@
             font-family: monospace;
         }
 
-        /* DROPZONE AREA */
+        .btn-submit {
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: #00ffcc;
+            color: #0a0a0c;
+        }
+
+        /* DROPZONE AREA (STEP 4 & 5) */
         .dropzone {
+            display: none;
             border: 2px dashed #333;
             padding: 50px 20px;
             background: rgba(20, 20, 25, 0.3);
@@ -230,13 +262,25 @@
 
     <div class="container">
         <header>
-            <h1>Stellar Optimization</h1>
-            <p>// AETHELGARD DYNAMICS REAL-TIME ENGINE - LIVE PROD_V1.0</p>
+            <h1>SINTACSIX</h1>
+            <p>Aethelgard Dynamics Optimization Engine - Uncompromising physical optimization of assets, audio, and code for high-performance engines.</p>
         </header>
 
-        <!-- PLANS INFRASTRUCTURE WITH THE NEW 1:10 RATIO -->
-        <div class="plans-section">
-            <h2 class="plans-title">// PAY-AS-YOU-GO CREDITS PACKAGES (1 USD = 10 CREDITS)</h2>
+        <!-- STEP 1: EMAIL LOGIN / STUDIO IDENTIFICATION -->
+        <div class="auth-gateway" id="auth-gateway">
+            <label for="user-email">// ENTER STUDIO EMAIL TO INITIALIZE SESSION:</label>
+            <input type="email" id="user-email" placeholder="studio@gamedev.com" required>
+            <button class="btn-submit" onclick="handleStudioLogin()">INITIALIZE ACCESS</button>
+        </div>
+
+        <!-- CREDIT COUNTER IN GREEN -->
+        <div class="credit-display" id="credit-display">
+            [ ACTIVE CREDITS: <span id="credit-count">0</span> ] | [ USER ID: <span id="display-user-id">---</span> ]
+        </div>
+
+        <!-- STEP 2 & 3: PAY-AS-YOU-GO CREDITS PACKAGES (3 TIERS) -->
+        <div class="plans-section" id="plans-section">
+            <h2 class="plans-title">// SELECT CREDIT PACKAGE (1 USD = 10 CREDITS)</h2>
             <div class="plans-grid">
                 
                 <div class="plan-card">
@@ -247,46 +291,50 @@
                         <li>Full Core Engine Access</li>
                         <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simulatePayPalCheckout(10, 'Starter Pack Dev')">ORDER CREDITS</button>
+                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(10, 100)">BUY 100 CREDITS</button>
                 </div>
 
                 <div class="plan-card" style="border-color: #00ffcc;">
                     <h3>[ STUDIO PACK ]</h3>
-                    <div class="price">$ 50.00</div>
+                    <div class="price">$ 100.00</div>
                     <ul>
-                        <li>500 Optimization Credits</li>
+                        <li>1,000 Optimization Credits</li>
                         <li>High-Priority Queue</li>
                         <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simulatePayPalCheckout(50, 'Gamedev Studio Core')">ORDER CREDITS</button>
+                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(100, 1000)">BUY 1,000 CREDITS</button>
+                </div>
+
+                <div class="plan-card">
+                    <h3>[ ENTERPRISE PACK ]</h3>
+                    <div class="price">$ 1,000.00</div>
+                    <ul>
+                        <li>10,000 Optimization Credits</li>
+                        <li>Dedicated Pipeline</li>
+                        <li>Zero Expiration Date</li>
+                    </ul>
+                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(1000, 10000)">BUY 10,000 CREDITS</button>
                 </div>
 
             </div>
         </div>
 
-        <!-- CONTROL TERMINAL SETUP -->
-        <div class="setup-area">
-            <div class="config-box">
-                <label for="preset">// CHOOSE OPTIMIZATION PROFILE:</label>
-                <select id="preset">
-                    <option value="BALANCED">BALANCED (75% Quality - Default)</option>
-                    <option value="PERFORMANCE">PERFORMANCE (40% Quality - Mobile Focus)</option>
-                    <option value="ULTRA_QUALITY">ULTRA QUALITY (95% Quality - Heavy Fidelity)</option>
-                </select>
-            </div>
-
-            <div class="token-box">
-                <label for="token">// ENTER RUNTIME ACCESS TOKEN:</label>
-                <input type="text" id="token" placeholder="Awaiting gateway clearance..." oninput="validateToken()">
-            </div>
+        <!-- STEP 4: TUNING CONFIG AREA -->
+        <div class="setup-area" id="setup-area">
+            <label for="preset">// CHOOSE OPTIMIZATION PROFILE:</label>
+            <select id="preset">
+                <option value="BALANCED">BALANCED (75% Quality - Default)</option>
+                <option value="PERFORMANCE">PERFORMANCE (40% Quality - Mobile Focus)</option>
+                <option value="ULTRA_QUALITY">ULTRA QUALITY (95% Quality - Heavy Fidelity)</option>
+            </select>
         </div>
 
         <!-- HIDDEN FILE INPUT FOR REAL UPLOADS -->
         <input type="file" id="file-input" style="display: none;" onchange="processRealUpload(this.files[0])">
 
-        <!-- DYNAMIC MAIN TERMINAL DROPZONE -->
+        <!-- STEP 4 & 5: DYNAMIC MAIN TERMINAL DROPZONE & DOWNLOAD -->
         <div class="dropzone" id="dropzone" onclick="triggerFileInput()">
-            <p id="dropzone-text">[ TERMINAL LOCKED: INVALID ACCESS KEY ]</p>
+            <p id="dropzone-text">[ TERMINAL LOCKED: PURCHASE CREDITS TO ENABLE UPLOAD ]</p>
             <div class="progress-container" id="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
@@ -295,97 +343,129 @@
     </div>
 
     <script>
-        // Set the active production endpoint from your Render host dashboard
         const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
+        let currentUserId = null;
+        let currentCredits = 0;
 
-        // Simulated PayPal Instant Notification integration
-        function simulatePayPalCheckout(amount, developerName) {
-            alert(`[PAYPAL GATEWAY]: Processing secure checkout transaction for $${amount}.00 USD...`);
+        function handleStudioLogin() {
+            const emailInput = document.getElementById('user-email').value.trim();
+            if(!emailInput || !emailInput.includes('@')) {
+                alert('[ERROR]: Please enter a valid studio email.');
+                return;
+            }
+
+            // Simulating connection / allocation of user id based on email input
+            currentUserId = Math.floor(Math.random() * 9000) + 1000;
+            currentCredits = 0; // Starts at 0 until purchase
+
+            // Update UI per step specifications
+            document.getElementById('auth-gateway').style.display = 'none';
+            document.getElementById('credit-display').style.display = 'block';
+            document.getElementById('credit-count').innerText = currentCredits;
+            document.getElementById('display-user-id').innerText = currentUserId;
             
-            // Calculating dynamically with our updated premium rule (1 USD = 10 Credits)
-            const targetCredits = amount * 10;
-            const currentYear = new Date().getFullYear();
-            const syntheticToken = `AE-${developerName.toUpperCase().replace(/\s/g, "")}-${currentYear}`;
-            
-            document.getElementById('token').value = syntheticToken;
-            validateToken();
-            
-            alert(`[STELLA WEBHOOK AUTOMATION]: Payment Verified!\nGenerated Token: ${syntheticToken}\nCredits allocated: ${targetCredits} files.\nAn automated verification email has been sent.`);
+            // Reveal plans (Step 2)
+            document.getElementById('plans-section').style.display = 'block';
         }
 
-        function validateToken() {
-            const tokenValue = document.getElementById('token').value.trim();
-            const dropzone = document.getElementById('dropzone');
-            const dropzoneText = document.getElementById('dropzone-text');
+        // Step 3: Lemon Squeezy Simulated Checkout redirection & webhook trigger
+        function simulateLemonSqueezyCheckout(amountDollars, creditsEarned) {
+            alert(`[LEMON SQUEEZY GATEWAY]: Redirecting secure checkout for $${amountDollars}.00 USD...`);
+            
+            // Simulating successful webhook return callback
+            currentCredits += creditsEarned;
+            document.getElementById('credit-count').innerText = currentCredits;
 
-            if(tokenValue.length > 8) {
-                dropzone.classList.add('active');
-                dropzoneText.innerText = "[ ACCESS GRANTED: CLICK TO UPLOAD AND OPTIMIZE ASSET ]";
-            } else {
-                dropzone.classList.remove('active');
-                dropzoneText.innerText = "[ TERMINAL LOCKED: INVALID ACCESS KEY ]";
-            }
+            alert(`[WEBHOOK AUTOMATION SUCCESS]: Payment received for User ID: ${currentUserId}.\nAdded ${creditsEarned} credits to your balance!`);
+
+            // Step 4: Hide Plans, Reveal Presets & Upload Dropzone
+            document.getElementById('plans-section').style.display = 'none';
+            document.getElementById('setup-area').style.display = 'block';
+            
+            const dropzone = document.getElementById('dropzone');
+            dropzone.style.display = 'block';
+            dropzone.classList.add('active');
+            document.getElementById('dropzone-text').innerText = "[ CREDITS VERIFIED: CLICK TO UPLOAD ASSET ]";
         }
 
         function triggerFileInput() {
             const dropzone = document.getElementById('dropzone');
-            if (dropzone.classList.contains('active')) {
+            if (dropzone.classList.contains('active') && currentCredits > 0) {
                 document.getElementById('file-input').click();
+            } else {
+                alert('[ERROR]: Insufficient credits or terminal locked.');
             }
         }
 
+        // Step 5: Real Processing and Download Button provision
         async function processRealUpload(fileData) {
             if (!fileData) return;
+            if (currentCredits <= 0) {
+                alert('[ERROR]: Zero credits available. Please top up.');
+                return;
+            }
 
-            const tokenValue = document.getElementById('token').value.trim();
             const selectedPreset = document.getElementById('preset').value;
 
-            // UI Terminal adjustments
             document.getElementById('dropzone-text').style.display = 'none';
             document.getElementById('progress-container').style.display = 'block';
             
             const statusLabel = document.getElementById('status-text');
             const progressBarFill = document.getElementById('progress-bar');
             
-            statusLabel.innerText = "Connecting to Stellar Core infrastructure on Render...";
+            statusLabel.innerText = "Connecting to Aethelgard Dynamics pipeline on Render...";
             progressBarFill.style.width = '25%';
 
-            // Initializing real multipart data compilation
             const multiPartForm = new FormData();
             multiPartForm.append("file", fileData);
 
             try {
-                // Request targeting our live pipeline
-                statusLabel.innerText = `Uploading and processing file via profile: [${selectedPreset}]...`;
+                statusLabel.innerText = `Optimizing asset via profile [${selectedPreset}]...`;
                 progressBarFill.style.width = '50%';
 
-                const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?modo_preset=${selectedPreset}`, {
+                const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?mode_preset=${selectedPreset}`, {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${tokenValue}`
+                        "user_id": currentUserId
                     },
                     body: multiPartForm
                 });
 
                 if (!serverResponse.ok) {
                     const errorMetadata = await serverResponse.json();
-                    throw new Error(errorMetadata.detail || "Server pipeline execution crash.");
+                    throw new Error(errorMetadata.detail || "Pipeline execution crash.");
                 }
 
                 progressBarFill.style.width = '85%';
-                statusLabel.innerText = "Downloading optimized production data asset...";
+                statusLabel.innerText = "Compilation complete. Preparing download asset package...";
 
-                // Extracting real binary object returned by FastAPI response stream
+                // Deduct local counter reflecting server action
+                currentCredits -= 1;
+                document.getElementById('credit-count').innerText = currentCredits;
+
+                // Step 5: Triggering file download dynamically
                 const binaryBlob = await serverResponse.blob();
                 const downloadElement = document.createElement('a');
                 downloadElement.href = window.URL.createObjectURL(binaryBlob);
-                downloadElement.download = `stella_${fileData.name}`;
+                downloadElement.download = `optimized_${fileData.name}`;
                 document.body.appendChild(downloadElement);
                 downloadElement.click();
                 downloadElement.remove();
 
                 progressBarFill.style.width = '100%';
-                statusLabel.innerHTML = "<span style='color: #00ff00;'>STELLAR PROCESSING COMPLETE! ASSET COMPILED AND DOWNLOADED.</span>";
+                statusLabel.innerHTML = "<span style='color: #00ff00;'>OPTIMIZATION SUCCESSFUL! DOWNLOAD READY & INITIATED.</span>";
+
+                // Reset dropzone text for subsequent files if credits remain
+                setTimeout(() => {
+                    document.getElementById('progress-container').style.display = 'none';
+                    const dropText = document.getElementById('dropzone-text');
+                    dropText.style.display = 'block';
+                    dropText.innerText = currentCredits > 0 ? "[ CLICK HERE TO UPLOAD ANOTHER FILE ]" : "[ OUT OF CREDITS: TOP UP TO CONTINUE ]";
+                    if(currentCredits <= 0) {
+                        document.getElementById('dropzone').classList.remove('active');
+                        document.getElementById('plans-section').style.display = 'block';
+                    }
+                }, 3500);
 
             } catch (runtimeError) {
                 console.error("Pipeline failure:", runtimeError);
