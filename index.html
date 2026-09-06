@@ -354,6 +354,10 @@
                 return;
             }
 
+            const submitBtn = document.querySelector('.auth-gateway .btn-submit');
+            submitBtn.innerText = "WAKING UP SERVER...";
+            submitBtn.disabled = true;
+
             try {
                 const response = await fetch(`${BACKEND_URL}/api/studio-login`, {
                     method: "POST",
@@ -389,7 +393,9 @@
 
             } catch (error) {
                 console.error("Login error:", error);
-                alert("[ERROR]: Could not connect to studio authentication gateway.");
+                submitBtn.innerText = "INITIALIZE ACCESS";
+                submitBtn.disabled = false;
+                alert("[ERROR]: Could not connect to studio authentication gateway. O servidor pode estar acordando, tente novamente em 10 segundos.");
             }
         }
 
