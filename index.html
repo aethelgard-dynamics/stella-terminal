@@ -587,14 +587,14 @@
             statusLabel.innerText = `Optimizing asset via profile [${selectedPreset}] (Cost: ${cost} credits)...`;
             progressBarFill.style.width = '50%';
 
-            const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?mode_preset=${selectedPreset}`, {
+                        const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?mode_preset=${selectedPreset}`, {
                 method: "POST",
                 headers: {
-                    "user_id": currentUserId
+                    "user-id": currentUserId
                 },
                 body: multiPartForm
             });
-
+            
             if (!serverResponse.ok) {
                 let errorMsg = "Pipeline execution crash.";
                 try {
