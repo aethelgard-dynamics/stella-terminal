@@ -45,6 +45,35 @@
             box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
             padding: 40px;
             border-radius: 4px;
+            position: relative;
+        }
+
+        /* TOP NAVIGATION BAR */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 15px;
+        }
+
+        .btn-back {
+            display: none;
+            background: transparent;
+            border: 1px solid #ff0033;
+            color: #ff0033;
+            padding: 6px 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background: #ff0033;
+            color: #0a0a0c;
+            box-shadow: 0 0 10px rgba(255, 0, 51, 0.4);
         }
 
         header h1 {
@@ -61,7 +90,7 @@
             color: #00ff00;
             font-size: 0.95rem;
             line-height: 1.5;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
 
@@ -82,6 +111,29 @@
             color: #00ff00;
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.4);
             letter-spacing: 1px;
+        }
+
+        /* ACTION HUB (GO TO OPTIMIZER BUTTON) */
+        .action-hub {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .btn-action-main {
+            background: #00ffcc;
+            color: #0a0a0c;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-main:hover {
+            background: #00cc99;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.7);
         }
 
         /* PLANS INFRASTRUCTURE (STEP 2 & 3) */
@@ -137,13 +189,34 @@
             list-style: none;
             font-size: 0.8rem;
             color: #aaa;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             line-height: 1.6;
         }
 
         .plan-card ul li::before {
             content: "> ";
             color: #00ffcc;
+        }
+
+        .multiplier-box {
+            margin-bottom: 15px;
+        }
+
+        .multiplier-box label {
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        .multiplier-input {
+            background: #111;
+            border: 1px solid #333;
+            color: #00ffcc;
+            padding: 6px;
+            width: 100%;
+            font-size: 0.9rem;
+            text-align: center;
+            font-family: monospace;
         }
 
         .btn-buy {
@@ -261,6 +334,12 @@
 <body>
 
     <div class="container">
+        <!-- TOP NAV WITH BACK BUTTON -->
+        <div class="top-nav">
+            <button class="btn-back" id="btn-back" onclick="navigateToOptimizer()">[ &lt; VOLTAR PARA OTIMIZAÇÃO ]</button>
+            <div style="font-size: 0.75rem; color: #555; margin-left: auto;">// AETHELGARD SECURE TERMINAL v2.0</div>
+        </div>
+
         <header>
             <h1>SINTACSIX</h1>
             <p>Aethelgard Dynamics Optimization Engine - Uncompromising physical optimization of images, textures, audio, and code for high-performance engines.</p>
@@ -278,7 +357,12 @@
             [ ACTIVE CREDITS: <span id="credit-count">0</span> ] | [ USER ID: <span id="display-user-id">---</span> ]
         </div>
 
-        <!-- STEP 2 & 3: PAY-AS-YOU-GO CREDITS PACKAGES (3 TIERS) -->
+        <!-- ACTION HUB: GO TO PACKS OR OTIMIZAR -->
+        <div class="action-hub" id="action-hub">
+            <button class="btn-action-main" onclick="navigateToPackages()">[ GERENCIAR / ADQUIRIR CRÉDITOS ]</button>
+        </div>
+
+        <!-- STEP 2 & 3: PAY-AS-YOU-GO CREDITS PACKAGES (3 TIERS WITH MULTIPLIER) -->
         <div class="plans-section" id="plans-section">
             <h2 class="plans-title">// SELECT CREDIT PACKAGE (1 USD = 10 CREDITS)</h2>
             <div class="plans-grid">
@@ -291,7 +375,11 @@
                         <li>Full Core Engine Access</li>
                         <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(10, 100)">BUY 100 CREDITS</button>
+                    <div class="multiplier-box">
+                        <label for="mult-100">// MULTIPLIER:</label>
+                        <input type="number" id="mult-100" class="multiplier-input" value="1" min="1" max="1000">
+                    </div>
+                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(10, 100, 'mult-100')">BUY PACK</button>
                 </div>
 
                 <div class="plan-card" style="border-color: #00ffcc;">
@@ -302,7 +390,11 @@
                         <li>High-Priority Queue</li>
                         <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(100, 1000)">BUY 1,000 CREDITS</button>
+                    <div class="multiplier-box">
+                        <label for="mult-1000">// MULTIPLIER:</label>
+                        <input type="number" id="mult-1000" class="multiplier-input" value="1" min="1" max="1000">
+                    </div>
+                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(100, 1000, 'mult-1000')">BUY PACK</button>
                 </div>
 
                 <div class="plan-card">
@@ -313,7 +405,11 @@
                         <li>Dedicated Pipeline</li>
                         <li>Zero Expiration Date</li>
                     </ul>
-                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(1000, 10000)">BUY 10,000 CREDITS</button>
+                    <div class="multiplier-box">
+                        <label for="mult-10000">// MULTIPLIER:</label>
+                        <input type="number" id="mult-10000" class="multiplier-input" value="1" min="1" max="1000">
+                    </div>
+                    <button class="btn-buy" onclick="simulateLemonSqueezyCheckout(1000, 10000, 'mult-10000')">BUY PACK</button>
                 </div>
 
             </div>
@@ -323,9 +419,9 @@
         <div class="setup-area" id="setup-area">
             <label for="preset">// CHOOSE OPTIMIZATION PROFILE:</label>
             <select id="preset">
-                <option value="BALANCED">BALANCED (75% Quality - Default)</option>
-                <option value="PERFORMANCE">PERFORMANCE (40% Quality - Mobile Focus)</option>
-                <option value="ULTRA_QUALITY">ULTRA QUALITY (95% Quality - Heavy Fidelity)</option>
+                <option value="BALANCED">BALANCED (75% Quality - Default - 2 Credits)</option>
+                <option value="PERFORMANCE">PERFORMANCE (40% Quality - Mobile Focus - 2 Credits)</option>
+                <option value="ULTRA_QUALITY">ULTRA QUALITY (95% Quality - Heavy Fidelity - 1 Credit)</option>
             </select>
         </div>
 
@@ -381,14 +477,11 @@
                 document.getElementById('credit-count').innerText = currentCredits;
                 document.getElementById('display-user-id').innerText = currentUserId;
                 
+                // Rota inteligente baseada no saldo de créditos
                 if (currentCredits > 0) {
-                    document.getElementById('setup-area').style.display = 'block';
-                    const dropzone = document.getElementById('dropzone');
-                    dropzone.style.display = 'block';
-                    dropzone.classList.add('active');
-                    document.getElementById('dropzone-text').innerText = "[ CREDITS VERIFIED: CLICK TO UPLOAD ASSET ]";
+                    showOptimizerView();
                 } else {
-                    document.getElementById('plans-section').style.display = 'block';
+                    navigateToPackages();
                 }
 
             } catch (error) {
@@ -399,21 +492,54 @@
             }
         }
 
-        function simulateLemonSqueezyCheckout(amountDollars, creditsEarned) {
-            alert(`[LEMON SQUEEZY GATEWAY]: Redirecting secure checkout for $${amountDollars}.00 USD...`);
-            
-            currentCredits += creditsEarned;
-            document.getElementById('credit-count').innerText = currentCredits;
-
-            alert(`[WEBHOOK AUTOMATION SUCCESS]: Payment received for User ID: ${currentUserId}.\nAdded ${creditsEarned} credits to your balance!`);
-
+        function showOptimizerView() {
             document.getElementById('plans-section').style.display = 'none';
+            document.getElementById('action-hub').style.display = 'block';
             document.getElementById('setup-area').style.display = 'block';
             
             const dropzone = document.getElementById('dropzone');
             dropzone.style.display = 'block';
             dropzone.classList.add('active');
             document.getElementById('dropzone-text').innerText = "[ CREDITS VERIFIED: CLICK TO UPLOAD ASSET ]";
+            
+            // Esconde botão voltar na tela principal de otimização
+            document.getElementById('btn-back').style.display = 'none';
+        }
+
+        function navigateToPackages() {
+            document.getElementById('action-hub').style.display = 'none';
+            document.getElementById('setup-area').style.display = 'none';
+            document.getElementById('dropzone').style.display = 'none';
+            document.getElementById('plans-section').style.display = 'block';
+            
+            // Mostra o botão de voltar caso o usuário tenha créditos e queira retornar
+            if (currentCredits > 0) {
+                document.getElementById('btn-back').style.display = 'block';
+            }
+        }
+
+        function navigateToOptimizer() {
+            if (currentCredits <= 0) {
+                alert('[ERROR]: Insufficient credits. Top up to unlock optimization.');
+                return;
+            }
+            showOptimizerView();
+        }
+
+        function simulateLemonSqueezyCheckout(baseDollars, baseCredits, multiplierInputId) {
+            const multiplier = parseInt(document.getElementById(multiplierInputId).value) || 1;
+            const totalDollars = baseDollars * multiplier;
+            const totalCredits = baseCredits * multiplier;
+
+            alert(`[LEMON SQUEEZY GATEWAY]: Redirecting secure checkout for $${totalDollars}.00 USD (${multiplier}x pack)...`);
+            
+            currentCredits += totalCredits;
+            document.getElementById('credit-count').innerText = currentCredits;
+
+            alert(`[WEBHOOK AUTOMATION SUCCESS]: Payment received for User ID: ${currentUserId}.\nAdded ${totalCredits} credits to your balance!`);
+
+            // Retorna o controle para a mão do cliente (ele escolhe quando voltar para otimizar)
+            showOptimizerView();
         }
 
         function triggerFileInput() {
@@ -433,76 +559,15 @@
             }
 
             const selectedPreset = document.getElementById('preset').value;
+            // Custo dinâmico no front alinhado ao backend: Ultra Quality = 1, Balanced/Performance = 2
+            const cost = selectedPreset === 'ULTRA_QUALITY' ? 1 : 2;
+
+            if (currentCredits < cost) {
+                alert(`[ERROR]: Saldo insuficiente. O modo [${selectedPreset}] exige ${cost} créditos.`);
+                navigateToPackages();
+                return;
+            }
 
             document.getElementById('dropzone-text').style.display = 'none';
             document.getElementById('progress-container').style.display = 'block';
-            
-            const statusLabel = document.getElementById('status-text');
-            const progressBarFill = document.getElementById('progress-bar');
-            
-            statusLabel.innerText = "Connecting to Aethelgard Dynamics pipeline on Render...";
-            progressBarFill.style.width = '25%';
-
-            const multiPartForm = new FormData();
-            multiPartForm.append("file", fileData);
-
-            try {
-                statusLabel.innerText = `Optimizing asset via profile [${selectedPreset}]...`;
-                progressBarFill.style.width = '50%';
-
-                const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?mode_preset=${selectedPreset}`, {
-                    method: "POST",
-                    headers: {
-                        "user_id": currentUserId
-                    },
-                    body: multiPartForm
-                });
-
-                if (!serverResponse.ok) {
-                    let errorMsg = "Pipeline execution crash.";
-                    try {
-                        const errorMetadata = await serverResponse.json();
-                        errorMsg = errorMetadata.detail || errorMsg;
-                    } catch (e) {
-                        errorMsg = await serverResponse.text() || errorMsg;
-                    }
-                    throw new Error(errorMsg);
-                }
-
-                progressBarFill.style.width = '85%';
-                statusLabel.innerText = "Compilation complete. Preparing download asset package...";
-
-                currentCredits -= 1;
-                document.getElementById('credit-count').innerText = currentCredits;
-
-                const binaryBlob = await serverResponse.blob();
-                const downloadElement = document.createElement('a');
-                downloadElement.href = window.URL.createObjectURL(binaryBlob);
-                downloadElement.download = `optimized_${fileData.name}`;
-                document.body.appendChild(downloadElement);
-                downloadElement.click();
-                downloadElement.remove();
-
-                progressBarFill.style.width = '100%';
-                statusLabel.innerHTML = "<span style='color: #00ff00;'>OPTIMIZATION SUCCESSFUL! DOWNLOAD READY & INITIATED.</span>";
-
-                setTimeout(() => {
-                    document.getElementById('progress-container').style.display = 'none';
-                    const dropText = document.getElementById('dropzone-text');
-                    dropText.style.display = 'block';
-                    dropText.innerText = currentCredits > 0 ? "[ CLICK HERE TO UPLOAD ANOTHER FILE ]" : "[ OUT OF CREDITS: TOP UP TO CONTINUE ]";
-                    if(currentCredits <= 0) {
-                        document.getElementById('dropzone').classList.remove('active');
-                        document.getElementById('plans-section').style.display = 'block';
-                    }
-                }, 3500);
-
-            } catch (runtimeError) {
-                console.error("Pipeline failure:", runtimeError);
-                progressBarFill.style.backgroundColor = '#ff0055';
-                statusLabel.innerHTML = `<span style='color: #ff0055;'>CRITICAL ERROR: ${runtimeError.message}</span>`;
-            }
-        }
-    </script>
-</body>
-</html>
+ 
