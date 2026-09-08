@@ -571,3 +571,75 @@
             document.getElementById('dropzone-text').style.display = 'none';
             document.getElementById('progress-container').style.display = 'block';
  
+        document.getElementById('dropzone-text').style.display = 'none';
+        document.getElementById('progress-container').style.display = 'block';
+        
+        const statusLabel = document.getElementById('status-text');
+        const progressBarFill = document.getElementById('progress-bar');
+        
+        statusLabel.innerText = "Connecting to Aethelgard Dynamics pipeline on Render...";
+        progressBarFill.style.width = '25%';
+
+        const multiPartForm = new FormData();
+        multiPartForm.append("file", fileData);
+
+        try {
+            statusLabel.innerText = `Optimizing asset via profile [${selectedPreset}] (Cost: ${cost} credits)...`;
+            progressBarFill.style.width = '50%';
+
+            const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?mode_preset=${selectedPreset}`, {
+                method: "POST",
+                headers: {
+                    "user_id": currentUserId
+                },
+                body: multiPartForm
+            });
+
+            if (!serverResponse.ok) {
+                let errorMsg = "Pipeline execution crash.";
+                try {
+                    const errorMetadata = await serverResponse.json();
+                    errorMsg = errorMetadata.detail || errorMsg;
+                } catch (e) {
+                    errorMsg = await serverResponse.text() || errorMsg;
+                }
+                throw new Error(errorMsg);
+            }
+
+            progressBarFill.style.width = '85%';
+            statusLabel.innerText = "Compilation complete. Preparing download asset package...";
+
+            currentCredits -= cost;
+            document.getElementById('credit-count').innerText = currentCredits;
+
+            const binaryBlob = await serverResponse.blob();
+            const downloadElement = document.createElement('a');
+            downloadElement.href = window.URL.createObjectURL(binaryBlob);
+            downloadElement.download = `optimized_${fileData.name}`;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            downloadElement.remove();
+
+            progressBarFill.style.width = '100%';
+            statusLabel.innerHTML = "<span style='color: #00ff00;'>OPTIMIZATION SUCCESSFUL! DOWNLOAD READY & INITIATED.</span>";
+
+            setTimeout(() => {
+                document.getElementById('progress-container').style.display = 'none';
+                const dropText = document.getElementById('dropzone-text');
+                dropText.style.display = 'block';
+                dropText.innerText = currentCredits > 0 ? "[ CLICK HERE TO UPLOAD ANOTHER FILE ]" : "[ OUT OF CREDITS: TOP UP TO CONTINUE ]";
+                if(currentCredits <= 0) {
+                    document.getElementById('dropzone').classList.remove('active');
+                    navigateToPackages();
+                }
+            }, 3500);
+
+        } catch (runtimeError) {
+            console.error("Pipeline failure:", runtimeError);
+            progressBarFill.style.backgroundColor = '#ff0055';
+            statusLabel.innerHTML = `<span style='color: #ff0055;'>CRITICAL ERROR: ${runtimeError.message}</span>`;
+        }
+    }
+    </script>
+</body>
+</html>
