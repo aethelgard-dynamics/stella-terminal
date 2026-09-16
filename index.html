@@ -415,186 +415,177 @@
             </div>
         </div>
 
-        <!-- STEP 4: TUNING CONFIG AREA -->
-        <div class="setup-area" id="setup-area">
-            <label for="preset">// CHOOSE OPTIMIZATION PROFILE:</label>
-            <select id="preset">
-                <option value="BALANCED">BALANCED (75% Quality - Default - 2 Credits)</option>
-                <option value="PERFORMANCE">PERFORMANCE (40% Quality - Mobile Focus - 2 Credits)</option>
-                <option value="ULTRA_QUALITY">ULTRA QUALITY (95% Quality - Heavy Fidelity - 1 Credit)</option>
-            </select>
-        </div>
+<!-- STEP 4: REMOVIDO O SELECT DE PRESETS (OTIMIZAÇÃO FIXA NO TALO) -->
 
-        <!-- HIDDEN FILE INPUT FOR REAL UPLOADS -->
-        <input type="file" id="file-input" style="display: none;" onchange="processRealUpload(this.files[0])">
+<!-- HIDDEN MULTI-FILE INPUT FOR REAL UPLOADS -->
+<input type="file" id="file-input" multiple style="display: none;" onchange="processRealUpload(this.files)">
 
-        <!-- STEP 4 & 5: DYNAMIC MAIN TERMINAL DROPZONE & DOWNLOAD -->
-        <div class="dropzone" id="dropzone" onclick="triggerFileInput()">
-            <p id="dropzone-text">[ TERMINAL LOCKED: PURCHASE CREDITS TO ENABLE UPLOAD ]</p>
-            <div class="progress-container" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-            <p class="status-text" id="status-text"></p>
-        </div>
+<!-- STEP 4 & 5: DYNAMIC MAIN TERMINAL DROPZONE & DOWNLOAD -->
+<div class="dropzone" id="dropzone" onclick="triggerFileInput()">
+    <div id="dropzone-text">[ TERMINAL LOCKED: PURCHASE CREDITS TO ENABLE UPLOAD ]</div>
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
     </div>
+    <p class="status-text" id="status-text"></p>
+</div>
+</div>
+<script>
+    const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
+    let currentUserId = null;
+    let currentCredits = 0;
 
-    <script>
-        const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
-        let currentUserId = null;
-        let currentCredits = 0;
-
-        async function handleStudioLogin() {
-            const emailInput = document.getElementById('user-email').value.trim();
-            if(!emailInput || !emailInput.includes('@')) {
-                alert('[ERROR]: Please enter a valid studio email.');
-                return;
-            }
-
-            const submitBtn = document.querySelector('.auth-gateway .btn-submit');
-            submitBtn.innerText = "WAKING UP SERVER...";
-            submitBtn.disabled = true;
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/studio-login`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ email: emailInput })
-                });
-
-                if (!response.ok) {
-                    throw new Error("Failed to authenticate studio session.");
-                }
-
-                const data = await response.json();
-                
-                currentUserId = data.user_id;
-                currentCredits = data.credits;
-
-                document.getElementById('auth-gateway').style.display = 'none';
-                document.getElementById('credit-display').style.display = 'block';
-                document.getElementById('credit-count').innerText = currentCredits;
-                document.getElementById('display-user-id').innerText = currentUserId;
-                
-                // Rota inteligente baseada no saldo de créditos
-                if (currentCredits > 0) {
-                    showOptimizerView();
-                } else {
-                    navigateToPackages();
-                }
-
-            } catch (error) {
-                console.error("Login error:", error);
-                submitBtn.innerText = "INITIALIZE ACCESS";
-                submitBtn.disabled = false;
-                alert("[ERROR]: Could not connect to studio authentication gateway. O servidor pode estar acordando, tente novamente em 10 segundos.");
-            }
+    async function handleStudioLogin() {
+        const emailInput = document.getElementById('user-email').value.trim();
+        if (!emailInput || !emailInput.includes('@')) {
+            alert('[ERROR]: Please enter a valid studio email.');
+            return;
         }
 
-        function showOptimizerView() {
-            document.getElementById('plans-section').style.display = 'none';
-            document.getElementById('action-hub').style.display = 'block';
-            document.getElementById('setup-area').style.display = 'block';
-            
-            const dropzone = document.getElementById('dropzone');
-            dropzone.style.display = 'block';
-            dropzone.classList.add('active');
-            document.getElementById('dropzone-text').innerText = "[ CREDITS VERIFIED: CLICK TO UPLOAD ASSET ]";
-            
-            // Esconde botão voltar na tela principal de otimização
-            document.getElementById('btn-back').style.display = 'none';
-        }
-
-        function navigateToPackages() {
-            document.getElementById('action-hub').style.display = 'none';
-            document.getElementById('setup-area').style.display = 'none';
-            document.getElementById('dropzone').style.display = 'none';
-            document.getElementById('plans-section').style.display = 'block';
-            
-            // Mostra o botão de voltar caso o usuário tenha créditos e queira retornar
-            if (currentCredits > 0) {
-                document.getElementById('btn-back').style.display = 'block';
-            }
-        }
-
-        function navigateToOptimizer() {
-            if (currentCredits <= 0) {
-                alert('[ERROR]: Insufficient credits. Top up to unlock optimization.');
-                return;
-            }
-            showOptimizerView();
-        }
-
-        function simulateLemonSqueezyCheckout(baseDollars, baseCredits, multiplierInputId) {
-            const multiplier = parseInt(document.getElementById(multiplierInputId).value) || 1;
-            const totalDollars = baseDollars * multiplier;
-            const totalCredits = baseCredits * multiplier;
-
-            alert(`[LEMON SQUEEZY GATEWAY]: Redirecting secure checkout for $${totalDollars}.00 USD (${multiplier}x pack)...`);
-            
-            currentCredits += totalCredits;
-            document.getElementById('credit-count').innerText = currentCredits;
-
-            alert(`[WEBHOOK AUTOMATION SUCCESS]: Payment received for User ID: ${currentUserId}.\nAdded ${totalCredits} credits to your balance!`);
-
-            // Retorna o controle para a mão do cliente (ele escolhe quando voltar para otimizar)
-            showOptimizerView();
-        }
-
-        function triggerFileInput() {
-            const dropzone = document.getElementById('dropzone');
-            if (dropzone.classList.contains('active') && currentCredits > 0) {
-                document.getElementById('file-input').click();
-            } else {
-                alert('[ERROR]: Insufficient credits or terminal locked.');
-            }
-        }
-
-        async function processRealUpload(fileData) {
-            if (!fileData) return;
-            if (currentCredits <= 0) {
-                alert('[ERROR]: Zero credits available. Please top up.');
-                return;
-            }
-
-            const selectedPreset = document.getElementById('preset').value;
-            // Custo dinâmico no front alinhado ao backend: Ultra Quality = 1, Balanced/Performance = 2
-            const cost = selectedPreset === 'ULTRA_QUALITY' ? 1 : 2;
-
-            if (currentCredits < cost) {
-                alert(`[ERROR]: Saldo insuficiente. O modo [${selectedPreset}] exige ${cost} créditos.`);
-                navigateToPackages();
-                return;
-            }
-
-            document.getElementById('dropzone-text').style.display = 'none';
-            document.getElementById('progress-container').style.display = 'block';
- 
-        document.getElementById('dropzone-text').style.display = 'none';
-        document.getElementById('progress-container').style.display = 'block';
-        
-        const statusLabel = document.getElementById('status-text');
-        const progressBarFill = document.getElementById('progress-bar');
-        
-        statusLabel.innerText = "Connecting to Aethelgard Dynamics pipeline on Render...";
-        progressBarFill.style.width = '25%';
-
-        const multiPartForm = new FormData();
-        multiPartForm.append("file", fileData);
+        const submitBtn = document.querySelector('.auth-gateway .btn-submit');
+        submitBtn.innerText = 'WAKING UP SERVER...';
+        submitBtn.disabled = true;
 
         try {
-            statusLabel.innerText = `Optimizing asset via profile [${selectedPreset}] (Cost: ${cost} credits)...`;
+            const response = await fetch(`${BACKEND_URL}/api/studio-login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: emailInput })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to authenticate studio session.');
+            }
+
+            const data = await response.json();
+
+            currentUserId = data.user_id;
+            currentCredits = data.credits;
+
+            document.getElementById('auth-gateway').style.display = 'none';
+            document.getElementById('credit-display').style.display = 'block';
+            document.getElementById('credit-count').innerText = currentCredits;
+            document.getElementById('display-user-id').innerText = currentUserId;
+
+            // Rota inteligente baseada no saldo de créditos
+            if (currentCredits > 0) {
+                showOptimizerView();
+            } else {
+                navigateToPackages();
+            }
+
+        } catch (error) {
+            console.error('Login error:', error);
+            submitBtn.innerText = 'INITIALIZE ACCESS';
+            submitBtn.disabled = false;
+            alert('[ERROR]: Could not connect to studio authentication gateway. O servidor pode estar acordando, tente novamente em 10 segundos.');
+        }
+    }
+
+    function showOptimizerView() {
+        document.getElementById('plan-section').style.display = 'none';
+        document.getElementById('action-hub').style.display = 'none';
+        document.getElementById('setup-area').style.display = 'block';
+
+        const dropzone = document.getElementById('dropzone');
+        dropzone.style.display = 'block';
+        dropzone.classList.add('active');
+        document.getElementById('dropzone-text').innerText = '[ CREDITS VERIFIED: CLICK TO UPLOAD ASSETS ]';
+
+        // Esconde botão voltar na tela principal de otimização
+        document.getElementById('btn-back').style.display = 'none';
+    }
+
+    function navigateToPackages() {
+        document.getElementById('action-hub').style.display = 'none';
+        document.getElementById('setup-area').style.display = 'none';
+        document.getElementById('dropzone').style.display = 'none';
+        document.getElementById('plan-section').style.display = 'block';
+
+        // Mostra o botão de voltar caso o usuário tenha créditos e queira retornar
+        if (currentCredits > 0) {
+            document.getElementById('btn-back').style.display = 'block';
+        }
+    }
+
+    function navigateToOptimizer() {
+        if (currentCredits <= 0) {
+            alert('[ERROR]: Insufficient credits. Top up to unlock optimization.');
+            return;
+        }
+        showOptimizerView();
+    }
+
+    function simulateLemonSqueezyCheckout(baseDollars, baseCredits, multiplierInputId) {
+        const multiplier = parseInt(document.getElementById(multiplierInputId).value) || 1;
+        const totalDollars = baseDollars * multiplier;
+        const totalCredits = baseCredits * multiplier;
+
+        alert(`[LEMON SQUEEZY GATEWAY]: Redirecting secure checkout for $${totalDollars}.00 USD (${multiplier}x pack)...`);
+
+        currentCredits = totalCredits;
+        document.getElementById('credit-count').innerText = currentCredits;
+
+        alert(`[WEBHOOK AUTOMATION SUCCESS]: Payment received for User ID: ${currentUserId}. Added ${totalCredits} credits to your balance!`);
+
+        // Retorna o controle para a mão do cliente (ele escolhe quando voltar para otimizar)
+        showOptimizerView();
+    }
+
+    function triggerFileInput() {
+        const dropzone = document.getElementById('dropzone');
+        if (dropzone.classList.contains('active') && currentCredits > 0) {
+            document.getElementById('file-input').click();
+        } else {
+            alert('[ERROR]: Insufficient credits or terminal locked.');
+        }
+    }
+
+    async function processRealUpload(fileList) {
+        if (!fileList || fileList.length === 0) return;
+
+        if (currentCredits <= 0) {
+            alert('[ERROR]: Zero credits available. Please top up.');
+            return;
+        }
+
+        const custoTotal = fileList.length * 2;
+
+        if (currentCredits < custoTotal) {
+            alert(`[ERROR]: Saldo insuficiente. Enviar ${fileList.length} arquivos exige ${custoTotal} créditos.`);
+            navigateToPackages();
+            return;
+        }
+
+        const dropzoneText = document.getElementById('dropzone-text');
+        const progressContainer = document.getElementById('progress-container');
+        const statusLabel = document.getElementById('status-text');
+        const progressBarFill = document.getElementById('progress-bar');
+
+        dropzoneText.style.display = 'none';
+        progressContainer.style.display = 'block';
+
+        statusLabel.innerHTML = `Connecting to Aethelgard Dynamics pipeline on Render...`;
+        progressBarFill.style.width = '20%';
+
+        const multiPartForm = new FormData();
+        for (let i = 0; i < fileList.length; i++) {
+            multiPartForm.append('files', fileList[i]);
+        }
+
+        try {
+            statusLabel.innerHTML = `Optimizing ${fileList.length} asset(s) with Maximum Turbo profile (Cost: ${custoTotal} credits)...`;
             progressBarFill.style.width = '50%';
 
-                        const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-file?mode_preset=${selectedPreset}`, {
-                method: "POST",
+            const serverResponse = await fetch(`${BACKEND_URL}/api/otimizar-lote`, {
+                method: 'POST',
                 headers: {
-                    "user-id": currentUserId
+                    'user-id': currentUserId
                 },
                 body: multiPartForm
             });
-            
+
             if (!serverResponse.ok) {
                 let errorMsg = "Pipeline execution crash.";
                 try {
@@ -607,39 +598,41 @@
             }
 
             progressBarFill.style.width = '85%';
-            statusLabel.innerText = "Compilation complete. Preparing download asset package...";
+            statusLabel.innerHTML = `Compilation complete. Processing batch results...`;
 
-            currentCredits -= cost;
+            const resultadoLote = await serverResponse.json();
+
+            currentCredits -= custoTotal;
             document.getElementById('credit-count').innerText = currentCredits;
 
-            const binaryBlob = await serverResponse.blob();
-            const downloadElement = document.createElement('a');
-            downloadElement.href = window.URL.createObjectURL(binaryBlob);
-            downloadElement.download = `optimized_${fileData.name}`;
-            document.body.appendChild(downloadElement);
-            downloadElement.click();
-            downloadElement.remove();
+            let sucessos = 0;
+            if (resultadoLote.resultados) {
+                resultadoLote.resultados.forEach(res => {
+                    if (res.success) {
+                        sucessos++;
+                    }
+                });
+            }
 
             progressBarFill.style.width = '100%';
-            statusLabel.innerHTML = "<span style='color: #00ff00;'>OPTIMIZATION SUCCESSFUL! DOWNLOAD READY & INITIATED.</span>";
+            statusLabel.innerHTML = `<span style="color: #00ff00;">BATCH OPTIMIZATION SUCCESS: ${sucessos}/${fileList.length} FILES PROCESSED!</span>`;
 
             setTimeout(() => {
-                document.getElementById('progress-container').style.display = 'none';
-                const dropText = document.getElementById('dropzone-text');
-                dropText.style.display = 'block';
-                dropText.innerText = currentCredits > 0 ? "[ CLICK HERE TO UPLOAD ANOTHER FILE ]" : "[ OUT OF CREDITS: TOP UP TO CONTINUE ]";
-                if(currentCredits <= 0) {
+                progressContainer.style.display = 'none';
+                dropzoneText.style.display = 'block';
+                dropzoneText.innerHTML = `[ CLICK HERE TO UPLOAD ANOTHER BATCH ]`;
+                if (currentCredits <= 0) {
                     document.getElementById('dropzone').classList.remove('active');
                     navigateToPackages();
                 }
-            }, 3500);
+            }, 6000);
 
         } catch (runtimeError) {
             console.error("Pipeline failure:", runtimeError);
             progressBarFill.style.backgroundColor = '#ff0055';
-            statusLabel.innerHTML = `<span style='color: #ff0055;'>CRITICAL ERROR: ${runtimeError.message}</span>`;
+            statusLabel.innerHTML = `<span style="color: #ff0055;">CRITICAL ERROR: ${runtimeError.message}</span>`;
         }
     }
-    </script>
+</script>
 </body>
 </html>
