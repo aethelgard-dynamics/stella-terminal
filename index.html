@@ -484,31 +484,29 @@
     }
 
     function showOptimizerView() {
-        document.getElementById('plan-section').style.display = 'none';
-        document.getElementById('action-hub').style.display = 'none';
-        document.getElementById('setup-area').style.display = 'block';
+    document.getElementById('plan-section').style.display = 'none';
+    document.getElementById('action-hub').style.display = 'block';
+    document.getElementById('setup-area').style.display = 'block';
+    
+    const dropzone = document.getElementById('dropzone');
+    dropzone.style.display = 'block';
+    dropzone.classList.add('active');
+    document.getElementById('dropzone-text').innerText = '[ CREDITS VERIFIED: CLICK TO UPLOAD ASSETS ]';
+    
+    document.getElementById('btn-back').style.display = 'none';
+}
 
-        const dropzone = document.getElementById('dropzone');
-        dropzone.style.display = 'block';
-        dropzone.classList.add('active');
-        document.getElementById('dropzone-text').innerText = '[ CREDITS VERIFIED: CLICK TO UPLOAD ASSETS ]';
-
-        // Esconde botão voltar na tela principal de otimização
-        document.getElementById('btn-back').style.display = 'none';
+function navigateToPackages() {
+    document.getElementById('action-hub').style.display = 'block';
+    document.getElementById('setup-area').style.display = 'block';
+    document.getElementById('dropzone').style.display = 'none';
+    document.getElementById('plan-section').style.display = 'block';
+    
+    if (currentCredits > 0) {
+        document.getElementById('btn-back').style.display = 'block';
     }
-
-    function navigateToPackages() {
-        document.getElementById('action-hub').style.display = 'none';
-        document.getElementById('setup-area').style.display = 'none';
-        document.getElementById('dropzone').style.display = 'none';
-        document.getElementById('plan-section').style.display = 'block';
-
-        // Mostra o botão de voltar caso o usuário tenha créditos e queira retornar
-        if (currentCredits > 0) {
-            document.getElementById('btn-back').style.display = 'block';
-        }
-    }
-
+}
+    
     function navigateToOptimizer() {
         if (currentCredits <= 0) {
             alert('[ERROR]: Insufficient credits. Top up to unlock optimization.');
