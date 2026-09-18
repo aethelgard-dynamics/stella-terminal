@@ -458,23 +458,31 @@
                 throw new Error('Failed to authenticate studio session.');
             }
 
-            const data = await response.json();
+                const data = await response.json();
 
-            currentUserId = data.user_id;
-            currentCredits = data.credits;
+    currentUserId = data.user_id;
+    currentCredits = data.credits;
 
-            document.getElementById('auth-gateway').style.display = 'none';
-            document.getElementById('credit-display').style.display = 'block';
-            document.getElementById('credit-count').innerText = currentCredits;
-            document.getElementById('display-user-id').innerText = currentUserId;
+    console.log("LOGIN OK. User ID:", currentUserId, "Credits:", currentCredits);
+    alert(`DEBUG LOGIN: ID=${currentUserId} | Credits=${currentCredits}`); // Alerta de confirmação
 
-            // Rota inteligente baseada no saldo de créditos
-            if (currentCredits > 0) {
-                showOptimizerView();
-            } else {
-                navigateToPackages();
-            }
+    document.getElementById('auth-gateway').style.display = 'none';
+    document.getElementById('credit-display').style.display = 'block';
+    document.getElementById('credit-count').innerText = currentCredits;
+    document.getElementById('display-user-id').innerText = currentUserId;
 
+    // Força a exibição direta para testar se os IDs do HTML existem
+    const setupArea = document.getElementById('setup-area');
+    const dropzone = document.getElementById('dropzone');
+    
+    alert(`DEBUG ELEMENTOS: setup-area=${setupArea}, dropzone=${dropzone}`); // Vai dizer se o HTML achou os elementos
+
+    if (currentCredits > 0) {
+        showOptimizerView();
+    } else {
+        navigateToPackages();
+    }
+            
         } catch (error) {
             console.error('Login error:', error);
             submitBtn.innerText = 'INITIALIZE ACCESS';
