@@ -421,13 +421,14 @@
 <input type="file" id="file-input" multiple style="display: none;" onchange="processRealUpload(this.files)">
 
 <!-- STEP 4 & 5: DYNAMIC MAIN TERMINAL DROPZONE & DOWNLOAD -->
-<div class="dropzone" id="dropzone" onclick="triggerFileInput()">
-    <div id="dropzone-text">[ TERMINAL LOCKED: PURCHASE CREDITS TO ENABLE UPLOAD ]</div>
-    <div class="progress-container" id="progress-container">
-        <div class="progress-bar" id="progress-bar"></div>
+<div id="setup-area" style="display: none;">
+    <div class="dropzone" id="dropzone" onclick="triggerFileInput()">
+        <div id="dropzone-text"> TERMINAL LOCKED: PURCHASE CREDITS TO ENABLE UPLOAD </div>
+        <div class="progress-container" id="progress-container" style="display: none;">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="status-text" id="status-text"></p>
     </div>
-    <p class="status-text" id="status-text"></p>
-</div>
 </div>
 <script>
     const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
@@ -463,19 +464,10 @@
     currentUserId = data.user_id;
     currentCredits = data.credits;
 
-    console.log("LOGIN OK. User ID:", currentUserId, "Credits:", currentCredits);
-    alert(`DEBUG LOGIN: ID=${currentUserId} | Credits=${currentCredits}`); // Alerta de confirmação
-
     document.getElementById('auth-gateway').style.display = 'none';
     document.getElementById('credit-display').style.display = 'block';
     document.getElementById('credit-count').innerText = currentCredits;
     document.getElementById('display-user-id').innerText = currentUserId;
-
-    // Força a exibição direta para testar se os IDs do HTML existem
-    const setupArea = document.getElementById('setup-area');
-    const dropzone = document.getElementById('dropzone');
-    
-    alert(`DEBUG ELEMENTOS: setup-area=${setupArea}, dropzone=${dropzone}`); // Vai dizer se o HTML achou os elementos
 
     if (currentCredits > 0) {
         showOptimizerView();
