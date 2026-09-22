@@ -291,7 +291,7 @@
         let currentCredits = 0;
         let lastProcessedBatch = []; // Stores transformed files data for manual download
 
-        // 1. Studio Login Handler
+                // 1. Studio Login Handler
         async function handleStudioLogin() {
             const emailInput = document.getElementById('user-email').value.trim();
             if (!emailInput || !emailInput.includes('@')) {
@@ -511,7 +511,7 @@
         function downloadAllOptimizedFiles() {
             if (!lastProcessedBatch || lastProcessedBatch.length === 0) {
                 alert('[INFO]: No active download payload found.');
-                return; // <-- Garante que está "return;" aqui e não o comentário!
+                return;
             }
 
             lastProcessedBatch.forEach((item, idx) => {
@@ -534,4 +534,6 @@
                 navigateToOptimizer();
             }
         }
-        
+        </script>
+</body>
+</html>
