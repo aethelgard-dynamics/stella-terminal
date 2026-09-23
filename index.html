@@ -241,7 +241,7 @@
                             <label for="mult-input">MULTIPLIER (QTY):</label><br>
                             <input type="number" id="mult-input" value="1" min="1" max="1000" oninput="updateDynamicCalc(this.value)">
                         </div>
-                        <button onclick="simulateLemonSqueezyCheckout()">BUY PACKAGE VIA LEMON SQUEEZY</button>
+                        <button onclick="abrirCheckoutLemonSqueezy()">BUY PACKAGE VIA LEMON SQUEEZY</button>
                     </div>
                 </div>
             </div>
@@ -340,24 +340,32 @@
             document.getElementById('preview-credits').innerText = mult * 100;
         }
 
-        // Simulate Lemon Squeezy Checkout & Instant Webhook Real-time Balance Update
-        function simulateLemonSqueezyCheckout() {
-            const mult = parseInt(document.getElementById('mult-input').value) || 1;
-            const totalDollars = 10 * mult;
-            const totalCredits = 100 * mult;
+        // Checkout Real via Lemon Squeezy com passagem segura do ID do usuário para o Webhook
+function abrirCheckoutLemonSqueezy() {
+    // Pega o ID do usuário atual armazenado na sessão
+    const userId = window.currentUserId || document.getElementById('user-id').innerText;
+    
+    if (!userId || userId === 'N/A') {
+        alert('[ERRO]: Estúdio não identificado. Por favor, faça o login novamente no início.');
+        return;
+    }
 
-            alert(`[LEMON SQUEEZY GATEWAY]: Redirecting secure checkout for $${totalDollars}.00 USD (${mult}x pack)...`);
+    // Lê a quantidade dinâmica selecionada pelo input (multiplier)
+    const mult = parseInt(document.getElementById('multi-input').value) || 1;
+    const totalDollars = 10 * mult;
 
-            // Simulating successful webhook callback
-            currentCredits += totalCredits;
-            document.getElementById('credit-count').innerText = currentCredits;
+    // Substitua 'SEU_STORE_SLUG' e 'SEU_VARIANT_ID' pelas informações reais da sua conta na Lemon Squeezy
+    const storeSlug = 'seu-store-slug'; 
+    const variantIdPacote = 'SEU_VARIANT_ID'; 
 
-            alert(`[WEBHOOK AUTOMATION SUCCESS]: Payment received for User ID: ${currentUserId}. Added ${totalCredits} credits to your balance!`);
-            
-            // Check if we can reveal the optimizer access shortcut now
-            checkOptimizerAccessButton();
-        }
+    // Monta a URL de checkout passando o custom data para o webhook do backend capturar
+    let checkoutUrl = `https://${storeSlug}.lemonsqueezy.com/buy/${variantIdPacote}`;
+    checkoutUrl += `?checkout[custom][user_id]=${encodeURIComponent(userId)}`;
 
+    // Redireciona para o ambiente de pagamento oficial da Lemon Squeezy
+    window.location.href = checkoutUrl;
+}
+        
         function checkOptimizerAccessButton() {
             const btnGoto = document.getElementById('btn-goto-optimizer');
             if (currentCredits > 0) {
