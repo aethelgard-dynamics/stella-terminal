@@ -340,13 +340,13 @@
             document.getElementById('preview-credits').innerText = mult * 100;
         }
 
-        // Checkout Real via Lemon Squeezy com passagem segura do ID do usuário para o Webhook
+        // Checkout Real via Lemon Squeezy com passagem segura do ID do usuário para o webhook
 function abrirCheckoutLemonSqueezy() {
     // Pega o ID do usuário atual armazenado na sessão
-    const userId = window.currentUserId || document.getElementById('user-id').innerText;
+    let userId = window.currentUserId || document.getElementById('display-user-id').innerText;
     
-    if (!userId || userId === 'N/A') {
-        alert('[ERRO]: Estúdio não identificado. Por favor, faça o login novamente no início.');
+    if (!userId || userId === "N/A") {
+        alert("[ERRO]: Estúdio não identificado. Por favor, faça o login novamente no início.");
         return;
     }
 
@@ -355,14 +355,14 @@ function abrirCheckoutLemonSqueezy() {
     const totalDollars = 10 * mult;
 
     // Substitua 'SEU_STORE_SLUG' e 'SEU_VARIANT_ID' pelas informações reais da sua conta na Lemon Squeezy
-    const storeSlug = 'seu-store-slug'; 
-    const variantIdPacote = 'SEU_VARIANT_ID'; 
+    const storeSlug = "aethelgard";
+    const variantIdPacote = "a47d72c7-34e4-4982-8477-a9a27d5db592";
 
-    // Monta a URL de checkout passando o custom data para o webhook do backend capturar
+    // Monta a URL de checkout passando a custom data para o webhook do backend capturar
     let checkoutUrl = `https://${storeSlug}.lemonsqueezy.com/buy/${variantIdPacote}`;
     checkoutUrl += `?checkout[custom][user_id]=${encodeURIComponent(userId)}`;
 
-    // Redireciona para o ambiente de pagamento oficial da Lemon Squeezy
+    // Redireciona para o ambiente de pagamento oficial na Lemon Squeezy
     window.location.href = checkoutUrl;
 }
         
