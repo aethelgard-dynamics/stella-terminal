@@ -342,26 +342,27 @@
 
         // Checkout Real via Lemon Squeezy com passagem segura do ID do usuário para o webhook
         function abrirCheckoutLemonSqueezy() {
-    alert("Iniciando checkout..."); // Teste visual imediato para ver se o botão responde
+    alert("Passo 1: Entrou na função");
 
     let userId = window.currentUserId || document.getElementById('display-user-id').innerText;
+    alert("Passo 2: UserId capturado -> " + userId);
     
     if (!userId || userId === "N/A") {
-        alert("[ERRO]: Estúdio não identificado. Por favor, faça o login novamente no início.");
+        alert("[ERRO]: Estúdio não identificado.");
         return;
     }
 
     const mult = parseInt(document.getElementById('multi-input').value) || 1;
-    const totalDollars = 10 * mult;
+    alert("Passo 3: Multiplicador lido -> " + mult);
 
     const storeSlug = "aethelgard";
     const variantIdPacote = "a47d72c7-34e4-4982-8477-a9a27d5db592";
 
-    // Usando concatenação simples para evitar qualquer falha de crases no telemóvel
     let checkoutUrl = "https://" + storeSlug + ".lemonsqueezy.com/buy/" + variantIdPacote;
     checkoutUrl = checkoutUrl + "?checkout[custom][user_id]=" + encodeURIComponent(userId);
+    
+    alert("Passo 4: URL gerada com sucesso. A redirecionar...");
 
-    // Redireciona para o ambiente de pagamento oficial na Lemon Squeezy
     window.location.href = checkoutUrl;
         }
         
