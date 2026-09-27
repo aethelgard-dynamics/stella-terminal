@@ -341,8 +341,9 @@
         }
 
         // Checkout Real via Lemon Squeezy com passagem segura do ID do usuário para o webhook
-function abrirCheckoutLemonSqueezy() {
-    // Pega o ID do usuário atual armazenado na sessão
+        function abrirCheckoutLemonSqueezy() {
+    alert("Iniciando checkout..."); // Teste visual imediato para ver se o botão responde
+
     let userId = window.currentUserId || document.getElementById('display-user-id').innerText;
     
     if (!userId || userId === "N/A") {
@@ -350,21 +351,19 @@ function abrirCheckoutLemonSqueezy() {
         return;
     }
 
-    // Lê a quantidade dinâmica selecionada pelo input (multiplier)
     const mult = parseInt(document.getElementById('multi-input').value) || 1;
     const totalDollars = 10 * mult;
 
-    // Substitua 'SEU_STORE_SLUG' e 'SEU_VARIANT_ID' pelas informações reais da sua conta na Lemon Squeezy
     const storeSlug = "aethelgard";
     const variantIdPacote = "a47d72c7-34e4-4982-8477-a9a27d5db592";
 
-    // Monta a URL de checkout passando a custom data para o webhook do backend capturar
-    let checkoutUrl = `https://${storeSlug}.lemonsqueezy.com/buy/${variantIdPacote}`;
-    checkoutUrl += `?checkout[custom][user_id]=${encodeURIComponent(userId)}`;
+    // Usando concatenação simples para evitar qualquer falha de crases no telemóvel
+    let checkoutUrl = "https://" + storeSlug + ".lemonsqueezy.com/buy/" + variantIdPacote;
+    checkoutUrl = checkoutUrl + "?checkout[custom][user_id]=" + encodeURIComponent(userId);
 
     // Redireciona para o ambiente de pagamento oficial na Lemon Squeezy
     window.location.href = checkoutUrl;
-}
+        }
         
         function checkOptimizerAccessButton() {
             const btnGoto = document.getElementById('btn-goto-optimizer');
