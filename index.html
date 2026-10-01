@@ -11,7 +11,7 @@
             --terminal-red: #ff3333;
             --terminal-dim: #00441a;
             --border-color: #00ff66;
-            --font-mono: 'Courier New', Courier, monospace;
+            --font-mono: "Courier New", Courier, monospace;
         }
 
         body {
@@ -58,10 +58,10 @@
         .container {
             width: 100%;
             max-width: 800px;
-            background: rgba(0, 20, 5, 0.6);
+            background: rgba(0, 30, 5, 0.6);
             border: 1px solid var(--border-color);
             padding: 25px;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 100, 0.1);
             position: relative;
         }
 
@@ -104,6 +104,7 @@
             border-color: var(--terminal-red);
             color: var(--terminal-red);
         }
+
         .btn-red:hover {
             background: var(--terminal-red);
             color: #000;
@@ -114,7 +115,6 @@
             display: none !important;
         }
 
-        /* Top Bar Status */
         .status-bar {
             display: flex;
             justify-content: space-between;
@@ -125,7 +125,6 @@
             font-size: 0.9rem;
         }
 
-        /* Plans Grid */
         .plans-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -143,21 +142,19 @@
             margin: 15px 0;
         }
 
-        /* Dropzone */
         .dropzone {
-            border: 2px dashed var(--terminal-green);
+            border: 1px dashed var(--terminal-green);
             padding: 40px;
             text-align: center;
             cursor: pointer;
-            background: rgba(0, 15, 5, 0.4);
-            transition: background 0.3s;
+            background: rgba(0, 25, 5, 0.4);
+            transition: background 0.2s;
         }
 
         .dropzone:hover {
             background: rgba(0, 255, 102, 0.05);
         }
 
-        /* Results List */
         .results-container {
             max-height: 300px;
             overflow-y: auto;
@@ -180,7 +177,7 @@
             background: #00220a;
             border: 1px solid var(--terminal-green);
             height: 20px;
-            margin: 15px 0;
+            margin: 5px 0;
         }
 
         .progress-bar-fill {
@@ -192,17 +189,17 @@
     </style>
 </head>
 <body>
-
+   
     <header>
         <h1 class="app-title">STELA OPTIMIZER</h1>
-        <div style="font-size: 0.8rem; color: #00aa44; margin-top: 5px;">// MAXIMUM TURBO ENGINE ACTIVE //</div>
+        <div style="font-size: 0.8rem; color: #00aa44; margin-top: 5px;">:// MAXIMUM TURBO ENGINE ACTIVE</div>
     </header>
 
     <div class="container">
 
         <!-- STEP 1: AUTH GATEWAY -->
         <div id="auth-gateway" class="auth-gateway">
-            <p>&gt;&gt; ENTER STUDIO EMAIL TO INITIALIZE SESSION:</p>
+            <p>&gt;&gt; ENTER STUDIED EMAIL TO INITIALIZE SESSION:</p>
             <div style="margin-top: 10px;">
                 <input type="email" id="user-email" placeholder="studio@gamedev.com" required>
                 <button onclick="handleStudioLogin()" class="btn-action">INITIALIZE ACCESS</button>
@@ -212,36 +209,65 @@
         <!-- APP DASHBOARD (Hidden until logged in) -->
         <div id="app-dashboard" class="hidden">
             
-            <!-- TOP BAR INFO -->
+            <!-- TOP SAVE INFO -->
             <div class="status-bar">
-                <div>USER ID: <span id="display-user-id" style="color: #fff;">---</span></div>
-                <div>ACTIVE CREDITS: <span id="credit-count" style="color: #fff;">0</span></div>
+                <div id="display-user-id" style="color: #fff;">--/--</div>
+                <div id="active-credits">CREDITS: <span id="credit-count" style="color: #00ff66;">0</span></div>
             </div>
 
             <!-- ACTION HUB (Back & Navigation buttons) -->
             <div id="action-hub" class="action-hub">
-                <button id="btn-back" class="hidden btn-red" onclick="navigateToPackages()">&lt;&lt; BACK TO PACKAGES</button>
-                <button id="btn-goto-optimizer" class="hidden" onclick="navigateToOptimizer()" style="float: right;">PROCEED TO OPTIMIZER &gt;&gt;</button>
+                <button id="btn-back" class="hidden btn-red" onclick="navigatePackages()">&lt;&lt; BACK TO PACKAGES</button>
+                <button id="btn-goto-optimizer" class="hidden" onclick="navigateOptimizer()" style="float: right;">PROCEED TO OPTIMIZER &gt;&gt;</button>
+                <div style="clear: both;"></div>
             </div>
 
-            <!-- STEP 2: CREDIT PACKAGES (Default landing after login) -->
+                        <!-- STEP 2: CREDIT PACKAGES (Default landing after login) -->
             <div id="plan-section" class="plans-section">
                 <h2>&gt;&gt; SELECT CREDIT PACKAGE (1 USD = 10 CREDITS)</h2>
                 <p style="font-size: 0.8rem; color: #888;">* Fixed cost: 2 credits per file (Audio, Images, Code compressed to absolute limit).</p>
-                
+
                 <div class="plans-grid">
+                    <!-- Pacote Básico ($10) -->
                     <div class="plan-card">
-                        <h3>[ STUDIO STANDARD PACK ]</h3>
-                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$10.00 USD = <span id="preview-credits">100</span> Credits</div>
-                        <ul>
-                            <li>Max Turbo Optimization Engine</li>
-                            <li>Zero Expiration Date</li>
-                        </ul>
-                        <div class="multiplier-box">
-                            <label for="mult-input">MULTIPLIER (QTY):</label><br>
-                            <input type="number" id="mult-input" value="1" min="1" max="1000" oninput="updateDynamicCalc(this.value)">
-                        </div>
-                        <button onclick="abrirCheckoutLemonSqueezy()">BUY PACKAGE VIA LEMON SQUEEZY</button>
+                        <h3>Pacote Básico</h3>
+                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$10.00 USD</div>
+                        <a href="https://aethelgard-dynamics.lemonsqueezy.com/checkout/buy/f2b4997f-026b-4f93-875e-dBae31ac19b4" class="btn-action" style="display:inline-block; text-align:center; text-decoration:none;">BUY BÁSICO ($10)</a>
+                    </div>
+
+                    <!-- Pacote Bronze ($50) -->
+                    <div class="plan-card">
+                        <h3>Pacote Bronze</h3>
+                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$50.00 USD</div>
+                        <a href="https://aethelgard-dynamics.lemonsqueezy.com/checkout/buy/0c9e74f3-576e-4c6c-b0de-7be0a2d3f641" class="btn-action" style="display:inline-block; text-align:center; text-decoration:none;">BUY BRONZE ($50)</a>
+                    </div>
+
+                    <!-- Pacote Prata ($100) -->
+                    <div class="plan-card">
+                        <h3>Pacote Prata</h3>
+                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$100.00 USD</div>
+                        <a href="https://aethelgard-dynamics.lemonsqueezy.com/checkout/buy/51e1ff1d-dd3c-489c-ase7-4ab8dc73e9dc" class="btn-action" style="display:inline-block; text-align:center; text-decoration:none;">BUY PRATA ($100)</a>
+                    </div>
+
+                    <!-- Pacote Ouro ($500) -->
+                    <div class="plan-card">
+                        <h3>Pacote Ouro</h3>
+                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$500.00 USD</div>
+                        <a href="https://aethelgard-dynamics.lemonsqueezy.com/checkout/buy/dec61928-5d67-45c3-884f-50104ac58a66" class="btn-action" style="display:inline-block; text-align:center; text-decoration:none;">BUY OURO ($500)</a>
+                    </div>
+
+                    <!-- Pacote Diamante ($1000) -->
+                    <div class="plan-card">
+                        <h3>Pacote Diamante</h3>
+                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$1,000.00 USD</div>
+                        <a href="https://aethelgard-dynamics.lemonsqueezy.com/checkout/buy/581eb673-3a50-4174-92a5-78d304d26bc9" class="btn-action" style="display:inline-block; text-align:center; text-decoration:none;">BUY DIAMANTE ($1K)</a>
+                    </div>
+
+                    <!-- Pacote Enterprise ($3000) -->
+                    <div class="plan-card">
+                        <h3>Pacote Enterprise</h3>
+                        <div style="font-size: 1.2rem; margin: 10px 0; color: #fff;">$3,000.00 USD</div>
+                        <a href="https://aethelgard-dynamics.lemonsqueezy.com/checkout/buy/1c413f50-563c-40b0-915b-b0f7f69f57e5" class="btn-action" style="display:inline-block; text-align:center; text-decoration:none;">BUY ENTERPRISE ($3K)</a>
                     </div>
                 </div>
             </div>
@@ -249,18 +275,17 @@
             <!-- STEP 3: OPTIMIZER SETUP AREA -->
             <div id="setup-area" class="setup-area hidden">
                 <h2>&gt;&gt; TERMINAL READY: MULTI-FILE DROPZONE</h2>
-                
-                <!-- Hidden file input for batch uploads -->
+
                 <input type="file" id="file-input" multiple class="hidden" onchange="processRealUpload(this.files)">
 
                 <div id="dropzone" class="dropzone" onclick="triggerFileInput()">
-                    <div id="dropzone-text">[ CLICK OR DROP MULTIPLE ASSETS HERE TO OPTIMIZE ]</div>
-                    
-                    <div id="progress-container" class="hidden">
-                        <div id="status-text" style="margin-bottom: 5px; font-size: 0.85rem;">Initializing pipeline...</div>
-                        <div class="progress-bar-container">
-                            <div id="progress-bar" class="progress-bar-fill"></div>
-                        </div>
+                    <div id="dropzone-text">&gt;&gt; CLICK OR DROP MULTIPLE ASSETS HERE TO OPTIMIZE &lt;&lt;</div>
+                </div>
+
+                <div id="progress-container" class="progress-container hidden">
+                    <div id="status-text" style="margin-bottom: 5px; font-size: 0.85rem;">Initializing pipeline...</div>
+                    <div class="progress-bar-container">
+                        <div id="progress-bar-fill" class="progress-bar-fill"></div>
                     </div>
                 </div>
             </div>
@@ -269,9 +294,8 @@
             <div id="result-area" class="result-area hidden">
                 <h2 style="color: var(--terminal-green);">&gt;&gt; BATCH OPTIMIZATION COMPLETE</h2>
                 <p style="font-size: 0.85rem;">Review compressed file metrics below:</p>
-                
+
                 <div id="results-list" class="results-container">
-                    <!-- Dynamic file rows will be injected here -->
                 </div>
 
                 <div style="text-align: center; margin-top: 20px;">
@@ -285,13 +309,12 @@
 
     </div>
 
-    <script>
-        const BACKEND_URL = "https://stella-backend-zcp4.onrender.com";
+        <script>
+        const BACKEND_URL = "https://stela-backend-zcp4.onrender.com";
         let currentUserId = null;
         let currentCredits = 0;
-        let lastProcessedBatch = []; // Stores transformed files data for manual download
+        let lastProcessedBatch = [];
 
-                // 1. Studio Login Handler
         async function handleStudioLogin() {
             const emailInput = document.getElementById('user-email').value.trim();
             if (!emailInput || !emailInput.includes('@')) {
@@ -299,8 +322,8 @@
                 return;
             }
 
-            const submitBtn = document.querySelector('#auth-gateway button');
-            submitBtn.innerText = 'MAKING UP SERVER...';
+            const submitBtn = document.querySelector('.auth-gateway button');
+            submitBtn.innerText = 'WAKING UP SERVER...';
             submitBtn.disabled = true;
 
             try {
@@ -316,123 +339,76 @@
                 currentUserId = data.user_id;
                 currentCredits = data.credits;
 
-                // Update UI State
                 document.getElementById('auth-gateway').classList.add('hidden');
                 document.getElementById('app-dashboard').classList.remove('hidden');
                 document.getElementById('credit-count').innerText = currentCredits;
                 document.getElementById('display-user-id').innerText = currentUserId;
 
-                // Rule 3: Always land on package screen first. Show "OPTIMIZE" shortcut if credits > 0
-                navigateToPackages();
+                checkOptimizerAccessButton();
 
             } catch (error) {
                 console.error('Login error:', error);
                 submitBtn.innerText = 'INITIALIZE ACCESS';
                 submitBtn.disabled = false;
-                alert('[ERROR]: Could not connect to studio authentication gateway. Server may be waking up, try again in 10 seconds.');
+                alert('[ERROR]: Could not connect to studio authentication gateway. Server may be waking up, try again.');
             }
         }
 
-        // Dynamic multi calculation preview
-        function updateDynamicCalc(val) {
-            let mult = parseInt(val) || 1;
-            if (mult < 1) mult = 1;
-            document.getElementById('preview-credits').innerText = mult * 100;
-        }
-
-        // Checkout Real via Lemon Squeezy com passagem segura do ID do usuário para o webhook
-        function abrirCheckoutLemonSqueezy() {
-    try {
-        let userId = window.currentUserId || "1";
-        
-        const displayElem = document.getElementById('display-user-id');
-        if (displayElem && displayElem.innerText && displayElem.innerText !== "N/A") {
-            userId = displayElem.innerText;
-        }
-
-        // Lê o multiplicador escolhido na tela (ex: 5)
-        let mult = 1;
-        const multiInput = document.getElementById('multi-input');
-        if (multiInput && multiInput.value) {
-            mult = parseInt(multiInput.value) || 1;
-        }
-
-        const storeSlug = "aethelgard";
-        const variantIdPacote = "a47d72c7-34e4-4982-8477-a9a27d5db592";
-
-        // Usando o formato oficial da Lemon Squeezy para quantity no checkout
-        let checkoutUrl = "https://" + storeSlug + ".lemonsqueezy.com/buy/" + variantIdPacote;
-        checkoutUrl = checkoutUrl + "?checkout[quantity]=" + mult;
-        checkoutUrl = checkoutUrl + "&checkout[custom][user_id]=" + encodeURIComponent(userId);
-
-        window.location.assign(checkoutUrl);
-        
-    } catch (err) {
-        alert("[ERRO NO CHECKOUT]: " + err.message);
-        window.location.href = "https://aethelgard.lemonsqueezy.com/buy/a47d72c7-34e4-4982-8477-a9a27d5db592";
-    }
-        }
-        
         function checkOptimizerAccessButton() {
             const btnGoto = document.getElementById('btn-goto-optimizer');
+            const btnBack = document.getElementById('btn-back');
             if (currentCredits > 0) {
                 btnGoto.classList.remove('hidden');
+                btnBack.classList.remove('hidden');
             } else {
                 btnGoto.classList.add('hidden');
             }
         }
 
-        // Navigation Controllers
-        fn = {
-            navigateToPackages: function() {
-                document.getElementById('plan-section').classList.remove('hidden');
-                document.getElementById('setup-area').classList.add('hidden');
-                document.getElementById('result-area').classList.add('hidden');
-                document.getElementById('btn-back').classList.add('hidden');
-                checkOptimizerAccessButton();
-            },
-            navigateToOptimizer: function() {
-                if (currentCredits <= 0) {
-                    alert('[ERROR]: Insufficient credits. Top up to unlock optimization.');
-                    return;
-                }
-                document.getElementById('plan-section').classList.add('hidden');
-                document.getElementById('setup-area').classList.remove('hidden');
-                document.getElementById('result-area').classList.add('hidden');
-                document.getElementById('btn-back').classList.remove('hidden');
-                document.getElementById('btn-goto-optimizer').classList.add('hidden');
-            }
+        function navigatePackages() {
+            document.getElementById('plan-section').classList.remove('hidden');
+            document.getElementById('setup-area').classList.add('hidden');
+            document.getElementById('result-area').classList.add('hidden');
+            document.getElementById('btn-back').classList.add('hidden');
+            checkOptimizerAccessButton();
         }
 
-        function navigateToPackages() { fn.navigateToPackages(); }
-        function navigateToOptimizer() { fn.navigateToOptimizer(); }
+        function navigateOptimizer() {
+            if (currentCredits <= 0) {
+                alert('[ERROR]: Insufficient credits. Top up to unlock optimization.');
+                return;
+            }
+            document.getElementById('plan-section').classList.add('hidden');
+            document.getElementById('setup-area').classList.remove('hidden');
+            document.getElementById('result-area').classList.add('hidden');
+            document.getElementById('btn-back').classList.remove('hidden');
+            document.getElementById('btn-goto-optimizer').classList.add('hidden');
+        }
 
         function triggerFileInput() {
             if (currentCredits <= 0) {
                 alert('[ERROR]: Zero credits available. Top up first.');
-                navigateToPackages();
+                navigatePackages();
                 return;
             }
             document.getElementById('file-input').click();
         }
 
-        // 4 & 5 & 6. Multi-file Batch Processing & Manual Results Review Screen
         async function processRealUpload(fileList) {
             if (!fileList || fileList.length === 0) return;
 
-            const costTotal = fileList.length * 2; // Rule 6: Fixed 2 credits per file
+            const costTotal = fileList.length * 2;
 
             if (currentCredits < costTotal) {
                 alert(`[ERROR]: Saldo insuficiente. Enviar ${fileList.length} arquivos exige ${costTotal} créditos.`);
-                navigateToPackages();
+                navigatePackages();
                 return;
             }
 
-            // UI Progress start
             document.getElementById('dropzone-text').classList.add('hidden');
             const progressContainer = document.getElementById('progress-container');
             const statusLabel = document.getElementById('status-text');
-            const progressBarFill = document.getElementById('progress-bar');
+            const progressBarFill = document.getElementById('progress-bar-fill');
             progressContainer.classList.remove('hidden');
 
             statusLabel.innerHTML = `Connecting to Aethelgard Dynamics pipeline on Render...`;
@@ -454,10 +430,10 @@
                 });
 
                 if (!serverResponse.ok) {
-                    let errorMsg = "Pipeline execution crash.";
+                    let errorMsg = 'Pipeline execution crash.';
                     try {
-                        const errMeta = await serverResponse.json();
-                        errorMsg = errMeta.detail || errorMsg;
+                        const errData = await serverResponse.json();
+                        errorMsg = errData.detail || errorMsg;
                     } catch(e) {
                         errorMsg = await serverResponse.text() || errorMsg;
                     }
@@ -468,33 +444,27 @@
                 statusLabel.innerHTML = `Compilation complete. Processing batch results...`;
 
                 const resultadoLote = await serverResponse.json();
-                
-                // Deduct credits locally based on server validation
+
                 currentCredits -= costTotal;
                 document.getElementById('credit-count').innerText = currentCredits;
 
                 progressBarFill.style.width = '100%';
-
-                // Store files for manual download
                 lastProcessedBatch = resultadoLote.resultados || [];
 
                 setTimeout(() => {
                     progressContainer.classList.add('hidden');
                     document.getElementById('dropzone-text').classList.remove('hidden');
-                    
-                    // Render Manual Results Screen (Point 5)
                     renderResultsScreen(fileList, lastProcessedBatch);
-
                 }, 1000);
 
             } catch (runtimeError) {
                 console.error('Pipeline failure:', runtimeError);
-                progressBarFill.style.backgroundColor = 'var(--terminal-red)';
-                statusLabel.innerHTML = `<span style="color: var(--terminal-red);">CRITICAL ERROR: ${runtimeError.message}</span>`;
+                progressBarFill.style.background = 'var(--terminal-red)';
+                statusLabel.innerHTML = `<span style="color: var(--terminal-red);">[CRITICAL ERROR]: ${runtimeError.message}</span>`;
                 setTimeout(() => {
                     progressContainer.classList.add('hidden');
                     document.getElementById('dropzone-text').classList.remove('hidden');
-                    progressBarFill.style.backgroundColor = 'var(--terminal-green)';
+                    progressBarFill.style.background = 'var(--terminal-green)';
                 }, 4000);
             }
         }
@@ -515,14 +485,13 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'result-item';
                 itemDiv.innerHTML = `
-                    <span>📁 ${origName}</span>
-                    <span style="color: #00ff66;">[ ${origSize} ➔ ${optimizedSize} ]</span>
+                    <span>📦 ${origName}</span>
+                    <span style="color: #00ff66;">&gt;&gt; (${origSize} &rarr; ${optimizedSize})</span>
                 `;
                 listContainer.appendChild(itemDiv);
             });
         }
 
-                // Manual Download Trigger
         function downloadAllOptimizedFiles() {
             if (!lastProcessedBatch || lastProcessedBatch.length === 0) {
                 alert('[INFO]: No active download payload found.');
@@ -541,14 +510,12 @@
             });
 
             alert('[SUCCESS]: Batch assets download triggered successfully.');
-            
-            // Return to package view or keep ready for next batch if credits allow
             if (currentCredits <= 0) {
-                navigateToPackages();
+                navigatePackages();
             } else {
-                navigateToOptimizer();
+                navigateOptimizer();
             }
         }
-        </script>
+    </script>
 </body>
 </html>
