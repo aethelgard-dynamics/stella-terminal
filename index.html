@@ -316,44 +316,45 @@
         let lastProcessedBatch = [];
 
         async function handleStudioLogin() {
-            const emailInput = document.getElementById('user-email').value.trim();
-            if (!emailInput || !emailInput.includes('@')) {
-                alert('[ERROR]: Please enter a valid studio email.');
-                return;
-            }
+    const emailInput = document.getElementById('user-email').value.trim();
+    if (!emailInput || !emailInput.includes('@')) {
+        alert('[ERROR]: Please enter a valid studio email.');
+        return;
+    }
 
-            const submitBtn = document.querySelector('.auth-gateway button');
-            submitBtn.innerText = 'WAKING UP SERVER...';
-            submitBtn.disabled = true;
+    const submitBtn = document.querySelector('.auth-gateway button');
+    submitBtn.innerText = 'WAKING UP SERVER...';
+    submitBtn.disabled = true;
 
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/studio-login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: emailInput })
-                });
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/studio-login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: emailInput })
+        });
 
-                if (!response.ok) throw new Error('Failed to authenticate studio session.');
+        if (!response.ok) throw new Error('Failed to authenticate studio session.');
 
-                const data = await response.json();
-                currentUserId = data.user_id;
-                currentCredits = data.credits;
+        const data = await response.json();
+        currentUserId = data.user_id;
+        currentCredits = data.credits;
 
-                document.getElementById('auth-gateway').classList.add('hidden');
-                document.getElementById('app-dashboard').classList.remove('hidden');
-                document.getElementById('credit-count').innerText = currentCredits;
-                document.getElementById('display-user-id').innerText = currentUserId;
+        document.getElementById('auth-gateway').classList.add('hidden');
+        document.getElementById('app-dashboard').classList.remove('hidden');
+        document.getElementById('credit-count').innerText = currentCredits;
+        document.getElementById('display-user-id').innerText = currentUserId;
 
-                checkOptimizerAccessButton();
+        checkOptimizerAccessButton();
 
-            } catch (error) {
-                console.error('Login error:', error);
-                submitBtn.innerText = 'INITIALIZE ACCESS';
-                submitBtn.disabled = false;
-                alert('[ERROR]: Could not connect to studio authentication gateway. Server may be waking up, try again.');
-            }
+    } catch (error) {
+        console.error('Login error:', error);
+        submitBtn.innerText = 'INITIALIZE ACCESS';
+        submitBtn.disabled = false;
+        // Agora o alerta vai mostrar exatamente o erro real que aconteceu
+        alert('[ERROR]: ' + error.message);
+    }
         }
-
+            
         function checkOptimizerAccessButton() {
             const btnGoto = document.getElementById('btn-goto-optimizer');
             const btnBack = document.getElementById('btn-back');
